@@ -1,0 +1,16 @@
+name: scaleway-ddns
+version: 0.1.0
+authors:
+  - D1ceWard <contact@d1ceward.com>
+description: Scaleway dynamic DNS service by API
+license: MIT
+crystal: 1.5.0
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+    version: ~> 0.14.0
+
+targets:
+  scaleway_ddns:
+    main: src/scaleway_ddns.cr
