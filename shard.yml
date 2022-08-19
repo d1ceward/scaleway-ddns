@@ -12,5 +12,5 @@ development_dependencies:
     version: ~> 0.14.0
 
 targets:
-  scaleway_ddns:
+  scaleway-ddns:
     main: src/scaleway_ddns.cr
