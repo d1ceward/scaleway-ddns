@@ -10,15 +10,15 @@ require "./scaleway_ddns/updater"
 require "./scaleway_ddns/request"
 
 # Initialize default config
-config = ScalewayDdns::Config.new
-ScalewayDdns::Updater.new(config).perform
+config = ScalewayDDNS::Config.new
+ScalewayDDNS::Updater.new(config).perform
 
 # # Intialize CLI parser
 # option_parser = OptionParser.new do |parser|
 #   parser.banner = "Scaleway dynamic DNS service by API\nUsage: scaleway-ddns [subcommand]"
 
 #   parser.on("-v", "--version", "Show version") do
-#     puts "version #{ScalewayDdns::VERSION}"
+#     puts "version #{ScalewayDDNS::VERSION}"
 #     exit
 #   end
 

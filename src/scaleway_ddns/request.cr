@@ -1,4 +1,4 @@
-module ScalewayDdns
+module ScalewayDDNS
   class Request
     SCW_API_HOST = "api.scaleway.com"
 
@@ -31,10 +31,10 @@ module ScalewayDdns
       return JSON.parse(response.body) if response.status_code == 200
 
       case response
-      when 401 then Log.error { "Unauthorized, please check your environment variable." }
-      when 408 then Log.error { "Timeout error, please check your environment variable or internet status." }
+      when 401 then Log.error { "Unauthorized, please check configuration file." }
+      when 408 then Log.error { "Timeout error, please check configuration file or internet status." }
       else
-        Log.error { "Unknown error, please check your environment variable or report to issue tracker." }
+        Log.error { "Unknown error, please check configuration file or report to issue tracker." }
       end
 
       JSON.parse("{}")

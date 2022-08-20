@@ -1,13 +1,15 @@
-module ScalewayDdns
+module ScalewayDDNS
   class Config
-    property scw_secret_key : String?
+    property scw_secret_key : String
     property domain_list : Array(String)
 
     def initialize
-      config = YAML.parse(File.read("config.yml"))
+      @scw_secret_key = ENV["SCW_SECRET_KEY"]?.to_s
+      @domain_list = parse_domain_list_from_env
+    end
 
-      @scw_secret_key = config.dig?("scaleway", "secret_key").to_s
-      @domain_list = config["domains"]?.try(&.as_a?).try(&.map(&.to_s)) || [] of String
+    private def parse_domain_list_from_env
+      ENV["DOMAIN_LIST"]?.to_s.gsub(/[[:space:]]+/, nil).split(',').reject(&.blank?)
     end
   end
 end
