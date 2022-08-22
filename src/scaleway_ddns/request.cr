@@ -2,9 +2,12 @@ module ScalewayDDNS
   class Request
     SCW_API_HOST = "api.scaleway.com"
 
-    def initialize(@config : Config); end
+    def initialize(@scw_secret_key : String); end
 
+    # Get a list of A (address) record from the Scaleway API for a given domain
     def address_record_list(domain : String) : Array(Hash(Symbol, String | Int32))
+      Log.info { "Scaleway API: Getting A record for #{domain}" }
+
       response = execute_request("GET", "/domain/v2beta1/dns-zones/#{domain}/records?type=A")
       records = parse_response(response)["records"]?.try(&.as_a?) || [] of Hash(String, JSON::Any)
 
@@ -18,26 +21,19 @@ module ScalewayDDNS
     end
 
     private def execute_request(method : String, endpoint : String) : HTTP::Client::Response
-      headers = HTTP::Headers{"X-Auth-Token" => @config.scw_secret_key.to_s}
+      headers = HTTP::Headers{"X-Auth-Token" => @scw_secret_key}
       client = HTTP::Client.new(URI.new("https", SCW_API_HOST))
-      client.connect_timeout = 4
+      client.connect_timeout = 10
 
       client.exec(method, endpoint, headers)
     rescue IO::TimeoutError | Socket::Addrinfo::Error | Socket::ConnectError
       HTTP::Client::Response.new(408)
     end
 
-    private def parse_response(response : HTTP::Client::Response)
+    private def parse_response(response : HTTP::Client::Response) : JSON::Any
       return JSON.parse(response.body) if response.status_code == 200
 
-      case response
-      when 401 then Log.error { "Unauthorized, please check configuration file." }
-      when 408 then Log.error { "Timeout error, please check configuration file or internet status." }
-      else
-        Log.error { "Unknown error, please check configuration file or report to issue tracker." }
-      end
-
-      JSON.parse("{}")
+      raise RequestError.new(response.status_code)
     end
   end
 end
