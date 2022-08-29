@@ -1,21 +1,25 @@
 module ScalewayDDNS
   class Updater
-    NO_DOMAIN_ERROR = "Empty domain list, please check configuration variables."
-
     def initialize(@config : Config)
       @request = Request.new(config.scw_secret_key.to_s)
     end
 
     def run
-      Log.info { "Starting DNS update..."}
-      raise GlobalError.new(NO_DOMAIN_ERROR) if @config.domain_list.none?
-
-      current_ip = IP.current_ip
-      @config.domain_list.each do |domain|
-        update_single_domain(domain, current_ip)
+      if @config.domain_list.none?
+        raise GlobalError.new("Empty domain list, please check configuration variables.")
       end
 
-      Log.info { "DNS update finished, exiting..."}
+      loop do
+        Log.info { "Starting DNS update..."}
+
+        current_ip = IP.current_ip
+        @config.domain_list.each do |domain|
+          update_single_domain(domain, current_ip)
+        end
+
+        Log.info { "DNS update finished, sleeping..."}
+        sleep(@config.idle_minutes * 60)
+      end
     rescue exception : GlobalError
       Log.error { exception.message }
       Log.info { "Exiting..."}
@@ -29,3 +33,22 @@ module ScalewayDDNS
     end
   end
 end
+
+
+# {
+#   "changes": [
+#     {
+#       "set": {
+#         "id": "",
+#         "records": [
+#           {
+#             "data": "ip",
+#             "name": "",
+#             "ttl": "3600",
+#             "type": "A"
+#           }
+#         ]
+#       }
+#     }
+#   ]
+# }

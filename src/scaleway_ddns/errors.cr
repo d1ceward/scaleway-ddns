@@ -1,5 +1,6 @@
 module ScalewayDDNS
   class GlobalError < Exception; end
+  class IPError < Exception; end
 
   class RequestError < Exception
     def initialize(@http_status : Int32)
