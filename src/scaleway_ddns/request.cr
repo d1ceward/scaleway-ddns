@@ -2,9 +2,18 @@ module ScalewayDDNS
   class Request
     SCW_API_HOST = "api.scaleway.com"
 
+    # Creates a new instance of `ScalewayDDNS::Request` with given Scaleway secret key.
     def initialize(@scw_secret_key : String); end
 
-    # Get a list of A (address) record from the Scaleway API for a given domain
+    # Get a list of A (address) record from the Scaleway API for a given domain.
+    #
+    # ```
+    # ScalewayDDNS::Request.address_record_list("example.com")
+    # # => [{ :id => 1, :name => "" :ttl => 60 }, { :id => 2, :name => "mail" :ttl => 120 }]
+    #
+    # ScalewayDDNS::Request.address_record_list("invalid.com")
+    # # => Scaleway API: Unauthorized, please check configuration variables.
+    # ```
     def address_record_list(domain : String) : Array(Hash(Symbol, String | Int32))
       Log.info { "Scaleway API: Getting A record for #{domain}" }
 
@@ -20,12 +29,38 @@ module ScalewayDDNS
       end
     end
 
-    private def execute_request(method : String, endpoint : String) : HTTP::Client::Response
+    def update_address_record
+      body = {
+        "changes": [
+          {
+            "set": {
+              "id": "",
+              "records": [
+                {
+                  "data": "ip",
+                  "name": "",
+                  "ttl": "3600",
+                  "type": "A"
+                }
+              ]
+            }
+          }
+        ]
+      }
+
+      execute_request("PATCH", "/domain/v2beta1/dns-zones/#{domain}/records")
+    end
+
+    private def execute_request(
+      method : String,
+      endpoint : String,
+      body : String? = nil
+    ) : HTTP::Client::Response
       headers = HTTP::Headers{"X-Auth-Token" => @scw_secret_key}
       client = HTTP::Client.new(URI.new("https", SCW_API_HOST))
       client.connect_timeout = 10
 
-      client.exec(method, endpoint, headers)
+      client.exec(method, endpoint, headers, body)
     rescue IO::TimeoutError | Socket::Addrinfo::Error | Socket::ConnectError
       HTTP::Client::Response.new(408)
     end

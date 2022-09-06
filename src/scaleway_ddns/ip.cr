@@ -2,7 +2,14 @@ module ScalewayDDNS
   class IP
     IP_API_HOST = "api.myip.com"
 
-    # Getting current IP address from external API as string
+    # Return current IP address from external API as string.
+    #
+    # ```
+    # ScalewayDDNS::IP.current_ip # => "127.0.0.1"
+    #
+    # # External API give an invalid response
+    # ScalewayDDNS::IP.current_ip # => IPError: IP API: Invalid IP from external.api.com
+    # ```
     def self.current_ip : String
       Log.info { "IP API: Getting current IP..." }
 

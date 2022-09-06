@@ -33,22 +33,3 @@ module ScalewayDDNS
     end
   end
 end
-
-
-# {
-#   "changes": [
-#     {
-#       "set": {
-#         "id": "",
-#         "records": [
-#           {
-#             "data": "ip",
-#             "name": "",
-#             "ttl": "3600",
-#             "type": "A"
-#           }
-#         ]
-#       }
-#     }
-#   ]
-# }
