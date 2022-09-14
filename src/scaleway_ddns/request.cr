@@ -23,32 +23,35 @@ module ScalewayDDNS
       records.map do |record|
         {
           :id => record["id"]?.to_s,
+          :data => record["data"]?.to_s,
           :name => record["name"]?.to_s,
           :ttl => record["ttl"]?.try(&.as_i) || 60
         }
       end
     end
 
-    def update_address_record
-      body = {
+    def update_address_record(domain : String, ip : String, record : Hash(Symbol, String | Int32))
+      Log.info { "Scaleway API: Updating A record for #{domain}" }
+
+      body_string = {
         "changes": [
           {
             "set": {
-              "id": "",
+              "id": "#{record[:id]}",
               "records": [
                 {
-                  "data": "ip",
-                  "name": "",
-                  "ttl": "3600",
+                  "data": "#{ip}",
+                  "name": "#{record[:name]}",
+                  "ttl": "#{record[:ttl]}",
                   "type": "A"
                 }
               ]
             }
           }
         ]
-      }
+      }.to_json
 
-      execute_request("PATCH", "/domain/v2beta1/dns-zones/#{domain}/records")
+      parse_response(execute_request("PATCH", "/domain/v2beta1/dns-zones/#{domain}/records", body_string))
     end
 
     private def execute_request(

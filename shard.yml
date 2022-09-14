@@ -1,10 +1,10 @@
 name: scaleway-ddns
 version: 0.1.0
 authors:
-  - D1ceWard <contact@d1ceward.com>
+  - d1ceward <contact@d1ceward.com>
 description: Simple Scaleway dynamic DNS service by API
 license: MIT
-crystal: 1.5.0
+crystal: 1.5.1
 
 development_dependencies:
   ameba:
