@@ -1,6 +1,6 @@
 module ScalewayDDNS
   class IP
-    IP_API_HOST = "api.myip.com"
+    IP_API_HOST = "api.ipify.org"
 
     # Return current IP address from external API as string.
     #
@@ -15,7 +15,7 @@ module ScalewayDDNS
 
       ip_string = ""
       elapsed_time = Time.measure do
-        ip_string = parse_response(execute_request)["ip"]?.to_s
+        ip_string = parse_response(execute_request).to_s
       end
       ip_address = Socket::IPAddress.new(ip_string, 0)
 
