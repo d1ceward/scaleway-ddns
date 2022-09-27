@@ -4,6 +4,40 @@
 [![GitHub issues](https://img.shields.io/github/issues/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/issues)
 [![GitHub license](https://img.shields.io/github/license/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/blob/master/LICENSE)
 
+Simple Scaleway dynamic DNS service by API written in Crystal.
+
+:rocket: Suggestions for new improvements are welcome in the issue tracker.
+
+## Installation and Usage
+
+### Docker
+
+With `docker run` command :
+```shell
+docker run -d \
+  -e SCW_SECRET_KEY="super-secret-from-scaleway" \
+  -e IDLE_MINUTES="10" \
+  -e DOMAIN_LIST="myfirstdomain.com, anotherone.com" \
+  d1ceward/scaleway-ddns:latest
+```
+
+With docker-compose file :
+```yaml
+---
+version: "3"
+
+services:
+  plug_exporter:
+    image: d1ceward/scaleway-ddns:latest
+    restart: unless-stopped
+    environment:
+      - SCW_SECRET_KEY="super-secret-from-scaleway"
+      - IDLE_MINUTES="10"
+      - DOMAIN_LIST="myfirstdomain.com, anotherone.com"
+```
+
+Documentation available here : https://d1ceward.github.io/scaleway-ddns/
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/d1ceward/scaleway-ddns. By contributing you agree to abide by the Code of Merit.
