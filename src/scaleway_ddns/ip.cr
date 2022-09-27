@@ -35,7 +35,7 @@ module ScalewayDDNS
       HTTP::Client::Response.new(408)
     end
 
-    private def self.parse_response(response : HTTP::Client::Response) : JSON::Any
+    private def self.parse_response(response : HTTP::Client::Response) : String
       return response.body if response.status_code == 200
 
       error_message = if response.status_code == 408
