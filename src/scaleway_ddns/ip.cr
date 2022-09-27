@@ -36,7 +36,7 @@ module ScalewayDDNS
     end
 
     private def self.parse_response(response : HTTP::Client::Response) : JSON::Any
-      return JSON.parse(response.body) if response.status_code == 200
+      return response.body if response.status_code == 200
 
       error_message = if response.status_code == 408
                         "IP API: Timeout error, please check your internet connection or IP API status."
