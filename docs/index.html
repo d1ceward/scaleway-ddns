@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.1.0">
+<meta name="crystal_docs.project_version" content="1.0.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>scaleway-ddns 0.1.0</title>
+  <title>scaleway-ddns 1.0.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.1.0
+        1.0.0
       </span>
     </div>
   </div>
@@ -111,6 +111,37 @@
 <a href="https://hub.docker.com/r/d1ceward/scaleway-ddns"><img src="https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg" alt="Docker Pulls" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/issues"><img src="https://img.shields.io/github/issues/d1ceward/scaleway-ddns" alt="GitHub issues" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/blob/master/LICENSE"><img src="https://img.shields.io/github/license/d1ceward/scaleway-ddns" alt="GitHub license" /></a></p>
+<p>Simple Scaleway dynamic DNS service by API written in Crystal.</p>
+<p>:rocket: Suggestions for new improvements are welcome in the issue tracker.</p>
+<h2><a id="installation-and-usage" class="anchor" href="#installation-and-usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation and Usage</h2>
+<h3><a id="docker" class="anchor" href="#docker">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Docker</h3>
+<p>With <code>docker run</code> command :</p>
+<pre><code class="language-shell">docker run -d \
+  -e SCW_SECRET_KEY=&quot;super-secret-from-scaleway&quot; \
+  -e IDLE_MINUTES=&quot;10&quot; \
+  -e DOMAIN_LIST=&quot;myfirstdomain.com, anotherone.com&quot; \
+  d1ceward/scaleway-ddns:latest</code></pre>
+<p>With docker-compose file :</p>
+<pre><code class="language-yaml">---
+version: &quot;3&quot;
+
+services:
+  plug_exporter:
+    image: d1ceward/scaleway-ddns:latest
+    restart: unless-stopped
+    environment:
+      - SCW_SECRET_KEY=&quot;super-secret-from-scaleway&quot;
+      - IDLE_MINUTES=&quot;10&quot;
+      - DOMAIN_LIST=&quot;myfirstdomain.com, anotherone.com&quot;</code></pre>
+<p>Documentation available here : https://d1ceward.github.io/scaleway-ddns/</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
