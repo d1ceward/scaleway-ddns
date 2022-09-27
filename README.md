@@ -27,7 +27,7 @@ With docker-compose file :
 version: "3"
 
 services:
-  plug_exporter:
+  scaleway_ddns:
     image: d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
