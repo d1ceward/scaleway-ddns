@@ -17,7 +17,7 @@ With `docker run` command :
 docker run -d \
   -e SCW_SECRET_KEY="super-secret-from-scaleway" \
   -e IDLE_MINUTES="10" \
-  -e DOMAIN_LIST="myfirstdomain.com, anotherone.com" \
+  -e DOMAIN_LIST="myfirstdomain.com,anotherone.com" \
   d1ceward/scaleway-ddns:latest
 ```
 
@@ -31,9 +31,9 @@ services:
     image: d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
-      - SCW_SECRET_KEY="super-secret-from-scaleway"
-      - IDLE_MINUTES="10"
-      - DOMAIN_LIST="myfirstdomain.com, anotherone.com"
+      - SCW_SECRET_KEY=super-secret-from-scaleway
+      - IDLE_MINUTES=10
+      - DOMAIN_LIST=myfirstdomain.com,anotherone.com
 ```
 
 Documentation available here : https://d1ceward.github.io/scaleway-ddns/
