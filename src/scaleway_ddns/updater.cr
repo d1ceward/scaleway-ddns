@@ -12,9 +12,13 @@ module ScalewayDDNS
       loop do
         Log.info { "Starting DNS update..." }
 
-        current_ip = IP.current_ip
-        @config.domain_list.each do |domain|
-          update_single_domain(domain, current_ip)
+        begin
+          current_ip = IP.current_ip
+          @config.domain_list.each do |domain|
+            update_single_domain(domain, current_ip)
+          end
+        rescue exception : IPError
+          Log.error { exception.message }
         end
 
         Log.info { "DNS update finished, sleeping..." }

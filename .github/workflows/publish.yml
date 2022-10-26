@@ -1,15 +1,43 @@
-name: Publish DockerHub image
+name: Build
 on:
   push:
     tags:
       - 'v*'
 jobs:
-  builder:
-    name: Builder
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Set crystal version environement variable
+        run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: ${{ env.CRYSTAL_VERSION }}
+      - name: Crystal shard cache
+        uses: actions/cache@v3
+        with:
+          path: lib
+          key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
+      - name: Install dependencies
+        run: shards install --production -v
+      - name: Build binary
+        run: shards build --static --no-debug --release --production -v
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: scaleway-ddns
+          path: bin/scaleway-ddns
+  publish:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -19,6 +47,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          logout: true
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
