@@ -36,6 +36,23 @@ services:
       - DOMAIN_LIST=myfirstdomain.com,anotherone.com
 ```
 
+### Linux
+
+Download the executable file :
+```shell
+wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v1.1.1/scaleway-ddns-linux-amd64
+```
+
+Modify the executable's permissions :
+```shell
+chmod +x scaleway-ddns
+```
+
+Execution example :
+```shell
+scaleway-ddns run
+```
+
 Documentation available here : https://d1ceward.github.io/scaleway-ddns/
 
 ## Contributing
