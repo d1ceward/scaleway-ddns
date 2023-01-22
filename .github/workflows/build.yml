@@ -51,7 +51,7 @@ jobs:
           name: release-binaries
           path: ./release-binaries/scaleway-ddns-*
       - name: Create draft release with binaries
-        uses: d1ceward/draft-assets-release-action@v1
+        uses: d1ceward/draft-assets-release-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
