@@ -1,8 +1,8 @@
 name: Build
 on:
   push:
-    # tags:
-    #   - 'v*'
+    tags:
+      - 'v*'
 jobs:
   build:
     name: Build
@@ -53,7 +53,7 @@ jobs:
       - name: Create draft release with binaries
         uses: d1ceward/draft-assets-release-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             bin/scaleway-ddns-linux-amd64
             bin/scaleway-ddns-linux-arm64
