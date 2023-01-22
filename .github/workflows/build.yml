@@ -55,8 +55,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            bin/scaleway-ddns-linux-amd64
-            bin/scaleway-ddns-linux-arm64
+            ./release-binaries/scaleway-ddns-linux-amd64
+            ./release-binaries/scaleway-ddns-linux-arm64
   publish:
     name: Publish
     needs: build
