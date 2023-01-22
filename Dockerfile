@@ -3,7 +3,7 @@ FROM alpine:latest as builder
 ARG TARGETPLATFORM
 
 WORKDIR /
-COPY ./shard* ./binaries/
+COPY ./scaleway-ddns-* ./binaries/
 
 RUN ls ./binaries
 RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
