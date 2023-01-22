@@ -35,8 +35,8 @@ module ScalewayDDNS
 
     private def option_parser
       OptionParser.new do |parser|
-        parser.banner = "Prometheus Exporter for Shelly plugs\nUsage: shellyplug-exporter [subcommand]"
-        parser.on("run", "Run exporter server") { @run_server = true }
+        parser.banner = "Simple Scaleway dynamic DNS service by API\nUsage: scaleway-ddns [subcommand]"
+        parser.on("run", "Run DNS update") { @run_server = true }
         parser.on("-v", "--version", "Show version") { display_version }
         parser.on("-h", "--help", "Show help") { display_help(parser) }
         parser.missing_option { |flag| missing_option(parser, flag) }
