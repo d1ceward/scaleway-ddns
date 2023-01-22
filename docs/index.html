@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.5.0">
-<meta name="crystal_docs.project_version" content="1.1.1">
+<meta name="generator" content="Crystal Docs 1.6.2">
+<meta name="crystal_docs.project_version" content="1.2.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>scaleway-ddns 1.1.1</title>
+  <title>scaleway-ddns 1.2.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        1.1.1
+        1.2.0
       </span>
     </div>
   </div>
@@ -55,6 +55,11 @@
       <a href="ScalewayDDNS.html">ScalewayDDNS</a>
       
         <ul>
+  
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
+      <a href="ScalewayDDNS/CLI.html">CLI</a>
+      
+    </li>
   
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/Config" data-name="scalewayddns::config">
       <a href="ScalewayDDNS/Config.html">Config</a>
@@ -103,10 +108,10 @@
 
 
 <div class="main-content">
-<h1><a id="scaleway-ddns-v1.1.0" class="anchor" href="#scaleway-ddns-v1.1.0">  <svg class="octicon-link" aria-hidden="true">
+<h1><a id="scaleway-ddns-v1.2.0" class="anchor" href="#scaleway-ddns-v1.2.0">  <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>scaleway-ddns (v1.1.0)</h1>
+</a>scaleway-ddns (v1.2.0)</h1>
 <p><img src="https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master" alt="GitHub Workflow Status (main)" />
 <a href="https://hub.docker.com/r/d1ceward/scaleway-ddns"><img src="https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg" alt="Docker Pulls" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/issues"><img src="https://img.shields.io/github/issues/d1ceward/scaleway-ddns" alt="GitHub issues" /></a>
@@ -141,6 +146,17 @@ services:
       - SCW_SECRET_KEY=super-secret-from-scaleway
       - IDLE_MINUTES=10
       - DOMAIN_LIST=myfirstdomain.com,anotherone.com</code></pre>
+<h3><a id="linux" class="anchor" href="#linux">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Linux</h3>
+<p>Download the executable file :</p>
+<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v1.2.0/scaleway-ddns-linux-amd64</code></pre>
+<p>Modify the executable's permissions :</p>
+<pre><code class="language-shell">chmod +x scaleway-ddns</code></pre>
+<p>Execution example :</p>
+<pre><code class="language-shell">scaleway-ddns run</code></pre>
 <p>Documentation available here : https://d1ceward.github.io/scaleway-ddns/</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">

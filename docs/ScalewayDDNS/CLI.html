@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Updater - scaleway-ddns 1.2.0</title>
+  <title>ScalewayDDNS::CLI - scaleway-ddns 1.2.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -56,7 +56,7 @@
       
         <ul>
   
-  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
+  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
       <a href="../ScalewayDDNS/CLI.html">CLI</a>
       
     </li>
@@ -91,7 +91,7 @@
       
     </li>
   
-  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/Updater" data-name="scalewayddns::updater">
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/Updater" data-name="scalewayddns::updater">
       <a href="../ScalewayDDNS/Updater.html">Updater</a>
       
     </li>
@@ -110,12 +110,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> ScalewayDDNS::Updater
+  <span class="kind">class</span> ScalewayDDNS::CLI
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../ScalewayDDNS/Updater.html">ScalewayDDNS::Updater</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../ScalewayDDNS/CLI.html">ScalewayDDNS::CLI</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -143,7 +143,7 @@
   </h2>
   
     
-      scaleway_ddns/updater.cr
+      scaleway_ddns/cli.cr
     
     <br/>
   
@@ -163,7 +163,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28config%3AConfig%29-class-method" class="signature"><strong>.new</strong>(config : Config)</a>
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
         
       </li>
     
@@ -184,7 +184,22 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#run-instance-method" class="signature"><strong>#run</strong></a>
+        <a href="#config%3AConfig-instance-method" class="signature"><strong>#config</strong> : Config</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#config%3D%28config%3AConfig%29-instance-method" class="signature"><strong>#config=</strong>(config : Config)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#run_server%3ABool-instance-method" class="signature"><strong>#run_server</strong> : Bool</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#run_server%3D%28run_server%3ABool%29-instance-method" class="signature"><strong>#run_server=</strong>(run_server : Bool)</a>
         
       </li>
     
@@ -228,12 +243,12 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(config:Config)-class-method">
+    <div class="entry-detail" id="new-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(config : <a href="../ScalewayDDNS/Config.html">Config</a>)
+        def self.<strong>new</strong>
 
-        <a class="method-permalink" href="#new%28config%3AConfig%29-class-method">#</a>
+        <a class="method-permalink" href="#new-class-method">#</a>
       </div>
       
       <br/>
@@ -256,12 +271,54 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="run-instance-method">
+    <div class="entry-detail" id="config:Config-instance-method">
       <div class="signature">
         
-        def <strong>run</strong>
+        def <strong>config</strong> : <a href="../ScalewayDDNS/Config.html">Config</a>
 
-        <a class="method-permalink" href="#run-instance-method">#</a>
+        <a class="method-permalink" href="#config%3AConfig-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="config=(config:Config)-instance-method">
+      <div class="signature">
+        
+        def <strong>config=</strong>(config : <a href="../ScalewayDDNS/Config.html">Config</a>)
+
+        <a class="method-permalink" href="#config%3D%28config%3AConfig%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="run_server:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>run_server</strong> : Bool
+
+        <a class="method-permalink" href="#run_server%3ABool-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="run_server=(run_server:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>run_server=</strong>(run_server : Bool)
+
+        <a class="method-permalink" href="#run_server%3D%28run_server%3ABool%29-instance-method">#</a>
       </div>
       
       <br/>
