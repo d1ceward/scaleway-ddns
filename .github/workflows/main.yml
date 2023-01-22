@@ -9,46 +9,46 @@ on:
       - opened
       - synchronize
 jobs:
-#   lints:
-#     name: Lints
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
-#       - name: Set crystal version environement variable
-#         run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
-#       - name: Install Crystal
-#         uses: crystal-lang/install-crystal@v1
-#         with:
-#           crystal: ${{ env.CRYSTAL_VERSION }}
-#       - name: Crystal shard cache
-#         uses: actions/cache@v3
-#         with:
-#           path: lib
-#           key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
-#       - name: Install dependencies
-#         run: shards install
-#       - name: Run ameba
-#         run: crystal lib/ameba/bin/ameba.cr
-#   tests:
-#     name: Tests
-#     runs-on: ubuntu-latest
-#     timeout-minutes: 10
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
-#       - name: Set crystal version environement variable
-#         run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
-#       - name: Install Crystal
-#         uses: crystal-lang/install-crystal@v1
-#         with:
-#           crystal: ${{ env.CRYSTAL_VERSION }}
-#       - name: Crystal shard cache
-#         uses: actions/cache@v3
-#         with:
-#           path: lib
-#           key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
-#       - name: Install dependencies
-#         run: shards install
-#       - name: Run tests
-#         run: crystal spec
+  lints:
+    name: Lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set crystal version environement variable
+        run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: ${{ env.CRYSTAL_VERSION }}
+      - name: Crystal shard cache
+        uses: actions/cache@v3
+        with:
+          path: lib
+          key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
+      - name: Install dependencies
+        run: shards install
+      - name: Run ameba
+        run: crystal lib/ameba/bin/ameba.cr
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set crystal version environement variable
+        run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: ${{ env.CRYSTAL_VERSION }}
+      - name: Crystal shard cache
+        uses: actions/cache@v3
+        with:
+          path: lib
+          key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
+      - name: Install dependencies
+        run: shards install
+      - name: Run tests
+        run: crystal spec
