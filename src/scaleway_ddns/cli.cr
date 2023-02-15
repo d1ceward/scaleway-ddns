@@ -1,13 +1,13 @@
 module ScalewayDDNS
   class CLI
     property config : Config = Config.new
-    property run_server : Bool = false
+    property? run_server : Bool = false
 
     def initialize
       parser = option_parser
       parser.parse
 
-      @run_server ? ScalewayDDNS::Updater.new(config).run : display_help(parser, 1)
+      run_server? ? ScalewayDDNS::Updater.new(config).run : display_help(parser, 1)
     end
 
     private def display_version
@@ -36,7 +36,7 @@ module ScalewayDDNS
     private def option_parser
       OptionParser.new do |parser|
         parser.banner = "Simple Scaleway dynamic DNS service by API\nUsage: scaleway-ddns [subcommand]"
-        parser.on("run", "Run DNS update") { @run_server = true }
+        parser.on("run", "Run DNS update") { self.run_server = true }
         parser.on("-v", "--version", "Show version") { display_version }
         parser.on("-h", "--help", "Show help") { display_help(parser) }
         parser.missing_option { |flag| missing_option(parser, flag) }
