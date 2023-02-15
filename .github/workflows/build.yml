@@ -48,12 +48,12 @@ jobs:
             shards install --production -v
             /tmp/crystal/bin/crystal build --static --no-debug --verbose --release -o ./scaleway-ddns src/scaleway_ddns.cr
 
-            mv scaleway-ddns scaleway-ddns-linux-${{ matrix.binarySuffix }}
+            mv scaleway-ddns scaleway-ddns-${{ matrix.binarySuffix }}
       - name: Upload binaries to action artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: scaleway-ddns-linux-${{ matrix.binarySuffix }}
-          path: ./repository/scaleway-ddns-linux-${{ matrix.binarySuffix }}
+          name: scaleway-ddns-${{ matrix.binarySuffix }}
+          path: ./repository/scaleway-ddns-${{ matrix.binarySuffix }}
   publish:
     name: Publish
     needs: build
