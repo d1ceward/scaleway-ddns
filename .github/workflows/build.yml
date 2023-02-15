@@ -67,8 +67,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ./scaleway-ddns-linux-linux-amd64/scaleway-ddns-linux-amd64
-            ./scaleway-ddns-linux-linux-arm64/scaleway-ddns-linux-arm64
+            ./scaleway-ddns-linux-amd64/scaleway-ddns-linux-amd64
+            ./scaleway-ddns-linux-arm64/scaleway-ddns-linux-arm64
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
