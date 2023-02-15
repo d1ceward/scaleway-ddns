@@ -5,51 +5,55 @@ on:
       - 'v*'
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-20.04
+    name: Build for ${{ matrix.binarySuffix }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - binarySuffix: linux-amd64
+            arch: x86_64
+            distro: alpine_latest
+          - binarySuffix: linux-arm64
+            arch: aarch64
+            distro: alpine_latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set crystal version environement variable
-        run: echo "CRYSTAL_VERSION=$(cat .crystal-version)" >> $GITHUB_ENV
-      - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1
         with:
-          crystal: ${{ env.CRYSTAL_VERSION }}
-      - name: Crystal shard cache
-        uses: actions/cache@v3
+          path: repository
+      - name: Build binary
+        uses: d1ceward/run-on-arch-action@master
         with:
-          path: lib
-          key: ${{ runner.os }}-shards-${{ hashFiles('**/shard.lock') }}
-      - name: Install dependencies & prepare binaries folder
-        run: |
-          shards install --production -v
-          mkdir ./release-binaries
-      - name: Build linux amd64 binary
-        run: crystal build --static --no-debug --verbose --release -o ./release-binaries/scaleway-ddns-linux-amd64 src/scaleway_ddns.cr
-      - name: Build linux arm64 binary object
-        run: crystal build --cross-compile --target=aarch64-unknown-linux-gnu --static --no-debug --verbose --release -o ./release-binaries/scaleway-ddns-linux-arm64 src/scaleway_ddns.cr
-      - name: Build linux arm64 binary
-        uses: uraimo/run-on-arch-action@v2
-        with:
-          arch: aarch64
-          distro: ubuntu20.04
-          setup: mkdir -p "${PWD}/release-binaries"
-          dockerRunArgs: --volume "${PWD}/release-binaries:/release-binaries"
-          install: |
-            apt-get update
-            apt-get --yes install build-essential libssl-dev libxml2-dev libyaml-dev libgmp-dev libz-dev libevent-dev libgc-dev libpcre3-dev curl sudo
-
-            CRYSTAL_VERSION=${{ env.CRYSTAL_VERSION }}
-            curl -fsSL https://crystal-lang.org/install.sh | sudo bash -s -- --version=${CRYSTAL_VERSION:0:3}
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+          dockerRunArgs: --volume "${PWD}/repository:/repository"
           run: |
-            cc /release-binaries/scaleway-ddns-linux-arm64.o -o /release-binaries/scaleway-ddns-linux-arm64  -rdynamic -static -L/usr/lib/crystal -lz `command -v pkg-config > /dev/null && pkg-config --libs --silence-errors libssl || printf %s '-lssl -lcrypto'` `command -v pkg-config > /dev/null && pkg-config --libs --silence-errors libcrypto || printf %s '-lcrypto'` -lpcre -lm -lgc -lpthread -levent -lrt -lpthread -ldl
-            rm /release-binaries/scaleway-ddns-linux-arm64.o
+            apk update
+            apk add make g++ openssl-dev openssl-libs-static yaml-static zlib-static curl crystal shards
+
+            export CRYSTAL_DIR=/tmp/crystal
+            export CRYSTAL_VERSION=$(cat /repository/.crystal-version)
+
+            mkdir -p $CRYSTAL_DIR
+            cd $CRYSTAL_DIR
+
+            curl -s -L --retry 15 --retry-delay 2 "https://github.com/crystal-lang/crystal/archive/${CRYSTAL_VERSION}.tar.gz" | tar xz -C $CRYSTAL_DIR --strip-component=1
+
+            export LLVM_VERSION=$(cat src/llvm/ext/llvm-versions.txt | awk '{print $1;}' | grep -o -E '[0-9]+' | head -1)
+            apk add "llvm${LLVM_VERSION}-dev" "llvm${LLVM_VERSION}-static"
+
+            make
+
+            cd /repository
+            shards install --production -v
+            /tmp/crystal/bin/crystal build --static --no-debug --verbose --release -o ./scaleway-ddns src/scaleway_ddns.cr
+
+            mv scaleway-ddns scaleway-ddns-linux-${{ matrix.binarySuffix }}
       - name: Upload binaries to action artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: release-binaries
-          path: ./release-binaries/scaleway-ddns-*
+          name: scaleway-ddns-linux-${{ matrix.binarySuffix }}
+          path: ./repository/scaleway-ddns-linux-${{ matrix.binarySuffix }}
   publish:
     name: Publish
     needs: build
@@ -63,8 +67,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ./release-binaries/scaleway-ddns-linux-amd64
-            ./release-binaries/scaleway-ddns-linux-arm64
+            ./scaleway-ddns-linux-linux-amd64/scaleway-ddns-linux-amd64
+            ./scaleway-ddns-linux-linux-arm64/scaleway-ddns-linux-arm64
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
