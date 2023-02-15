@@ -3,11 +3,11 @@ FROM alpine:latest as builder
 ARG TARGETPLATFORM
 
 WORKDIR /
-COPY ./scaleway-ddns-* .
+COPY ./scaleway-ddns-linux-amd64/scaleway-ddns-linux-amd64 .
+COPY ./scaleway-ddns-linux-arm64/scaleway-ddns-linux-arm64 .
 
 RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
-    export REQUIRED_BINARY_NAME="scaleway-ddns-${BINARY_PLATFORM}" && \
-    mv "./${REQUIRED_BINARY_NAME}/${REQUIRED_BINARY_NAME}" ./scaleway-ddns
+    mv "./scaleway-ddns-${BINARY_PLATFORM}" ./scaleway-ddns
 
 FROM alpine:latest
 
