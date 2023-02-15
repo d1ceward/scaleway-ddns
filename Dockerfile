@@ -3,11 +3,11 @@ FROM alpine:latest as builder
 ARG TARGETPLATFORM
 
 WORKDIR /
-COPY ./release-binaries/scaleway-ddns-* .
+COPY ./scaleway-ddns-* .
 
 RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
     export REQUIRED_BINARY_NAME="scaleway-ddns-${BINARY_PLATFORM}" && \
-    mv "./${REQUIRED_BINARY_NAME}" ./scaleway-ddns
+    mv "./${REQUIRED_BINARY_NAME}/${REQUIRED_BINARY_NAME}" ./scaleway-ddns
 
 FROM alpine:latest
 
