@@ -1,6 +1,7 @@
 ENV["CRYSTAL_SPEC_CONTEXT"] = "true"
 
 require "spec"
+require "webmock"
 require "../src/scaleway_ddns"
 
 module DummyConfig
