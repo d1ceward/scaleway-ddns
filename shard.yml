@@ -4,12 +4,12 @@ authors:
   - d1ceward <contact@d1ceward.com>
 description: Simple Scaleway dynamic DNS service by API
 license: MIT
-crystal: 1.8.2
+crystal: 1.9.2
 
 development_dependencies:
   ameba:
     github: crystal-ameba/ameba
-    version: ~> 1.4.0
+    version: ~> 1.5.0
   webmock:
     github: manastech/webmock.cr
     version: ~> 0.14.0
