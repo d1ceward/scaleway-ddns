@@ -73,7 +73,7 @@ module ScalewayDDNS
       # Set headers and create an HTTP client with a timeout for the connection.
       headers = HTTP::Headers{"X-Auth-Token" => @scw_secret_key}
       client = HTTP::Client.new(URI.new("https", SCW_API_HOST))
-      client.connect_timeout = 10
+      client.connect_timeout = 10.seconds
 
       # Execute the API request and return the response
       client.exec(method, endpoint, headers, body)

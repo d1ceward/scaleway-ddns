@@ -34,7 +34,7 @@ module ScalewayDDNS
     private def self.execute_request : HTTP::Client::Response
       # Create an HTTP client with a timeout for the connection
       client = HTTP::Client.new(URI.new("https", IP_API_HOST))
-      client.connect_timeout = 10
+      client.connect_timeout = 10.seconds
 
       # Make a GET request to the API
       client.get("/")
