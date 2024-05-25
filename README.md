@@ -24,8 +24,6 @@ docker run -d \
 With docker-compose file :
 ```yaml
 ---
-version: "3"
-
 services:
   scaleway_ddns:
     image: d1ceward/scaleway-ddns:latest
