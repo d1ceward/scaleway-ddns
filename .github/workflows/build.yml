@@ -7,6 +7,7 @@ jobs:
   build:
     name: Build for ${{ matrix.binarySuffix }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         include:
@@ -50,7 +51,7 @@ jobs:
 
             mv scaleway-ddns scaleway-ddns-${{ matrix.binarySuffix }}
       - name: Upload binaries to action artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: scaleway-ddns-${{ matrix.binarySuffix }}
           path: ./repository/scaleway-ddns-${{ matrix.binarySuffix }}
@@ -58,10 +59,11 @@ jobs:
     name: Publish
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       - name: Create draft release with binaries
         uses: d1ceward/draft-assets-release-action@v2
         with:
@@ -74,21 +76,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
           logout: true
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: d1ceward/scaleway-ddns
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          repository: d1ceward/scaleway-ddns
