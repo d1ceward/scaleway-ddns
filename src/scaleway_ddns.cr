@@ -11,5 +11,3 @@ require "./scaleway_ddns/errors"
 require "./scaleway_ddns/ip"
 require "./scaleway_ddns/request"
 require "./scaleway_ddns/updater"
-
-ScalewayDDNS::CLI.new unless ENV["CRYSTAL_SPEC_CONTEXT"]?
