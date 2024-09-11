@@ -12,12 +12,24 @@ module ScalewayDDNS
     property? run_updater : Bool = false
 
     # Initialize the CLI.
-    def initialize
+    def initialize : Nil
       parser = option_parser
       parser.parse
 
       # If run_updater flag is set, start the updater; otherwise, display help.
-      run_updater? ? ScalewayDDNS::Updater.new(config).run : display_help(parser, 1)
+      run_updater? ? updater_start : display_help(parser, 1)
+    end
+
+    # Starts the updater process.
+    private def updater_start : Nil
+      Process.on_terminate do |reason|
+        next unless reason.aborted? || reason.interrupted? || reason.session_ended?
+
+        STDOUT.puts("terminating gracefully...")
+        exit(0)
+      end
+
+      ScalewayDDNS::Updater.new(config).run
     end
 
     # Print the version number to the standard output and exits the program.
@@ -35,7 +47,6 @@ module ScalewayDDNS
     # This method is used to handle missing options in the command line interface.
     private def missing_option(parser : OptionParser, flag : String) : Nil
       STDERR.puts("ERROR: #{flag} is missing something.")
-      STDERR.puts("")
       STDERR.puts(parser)
       exit(1)
     end
