@@ -47,7 +47,7 @@ jobs:
 
             cd /repository
             shards install --production -v
-            /tmp/crystal/bin/crystal build --static --no-debug --verbose --release -o ./scaleway-ddns src/scaleway_ddns.cr
+            /tmp/crystal/bin/crystal build --static --no-debug --verbose --release -o ./scaleway-ddns src/scaleway_ddns_run.cr
 
             mv scaleway-ddns scaleway-ddns-${{ matrix.binarySuffix }}
       - name: Upload binaries to action artifacts
