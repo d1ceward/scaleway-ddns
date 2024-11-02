@@ -29,9 +29,9 @@ services:
     image: d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
-      - SCW_SECRET_KEY=super-secret-from-scaleway
-      - IDLE_MINUTES=10
-      - DOMAIN_LIST=myfirstdomain.com,anotherone.com
+      SCW_SECRET_KEY: super-secret-from-scaleway
+      IDLE_MINUTES: 10
+      DOMAIN_LIST: myfirstdomain.com,anotherone.com
 ```
 
 ### Linux
