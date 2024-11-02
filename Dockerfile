@@ -12,6 +12,7 @@ RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
 FROM alpine:latest
 
 WORKDIR /
+COPY ./LICENSE .
 COPY --from=builder ./scaleway-ddns .
 
 RUN chmod +x ./scaleway-ddns
