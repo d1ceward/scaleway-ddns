@@ -1,5 +1,5 @@
 name: scaleway-ddns
-version: 1.12.0
+version: 1.12.1
 authors:
   - d1ceward <contact@d1ceward.com>
 description: Simple Scaleway dynamic DNS service by API
