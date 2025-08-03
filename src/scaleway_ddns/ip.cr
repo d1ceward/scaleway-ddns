@@ -1,59 +1,59 @@
 module ScalewayDDNS
   # The IP class provides methods to retrieve the current external IP address using an API.
   class IP
-    # The host of the IP API used to fetch the current IP address.
-    IP_API_HOST = "api.ipify.org"
+    IP_API_HOST_V4 = "api.ipify.org"
+    IP_API_HOST_V6 = "api6.ipify.org"
 
-    # Return current IP address from external API as string.
-    #
-    # ```
-    # ScalewayDDNS::IP.current_ip # => "127.0.0.1"
-    #
-    # # External API give an invalid response
-    # ScalewayDDNS::IP.current_ip # => IPError: IP API: Invalid IP from external.api.com
-    # ```
-    def self.current_ip : String
-      Log.info { "IP API: Getting current IP..." }
+    # Returns a hash of enabled IP versions and their addresses, e.g. {"ipv4" => "1.2.3.4", "ipv6" => "::1"}
+    def self.current_ips(ipv4 : Bool = true, ipv6 : Bool = false) : Hash(String, String)
+      [
+        {"ipv4", ipv4, false},
+        {"ipv6", ipv6, true}
+      ].select { |_, enabled, _| enabled }
+       .each_with_object({} of String => String) do |(label, _, v6), result|
+        begin
+          result[label] = current_ip(v6)
+        rescue IPError
+          Log.warn { "Could not fetch #{label.upcase} address" }
+        end
+      end
+    end
+
+    # Returns current IP address from external API as string
+    private def self.current_ip(ipv6 : Bool = false) : String
+      version = ipv6 ? "IPv6" : "IPv4"
+      Log.info { "IP API: Getting current #{version}..." }
 
       ip_string = ""
       elapsed_time = Time.measure do
-        # Execute the API request and parse the response
-        ip_string = parse_response(execute_request).to_s
+        ip_string = parse_response(execute_request(ipv6))
       end
+
       ip_address = Socket::IPAddress.new(ip_string, 0)
-
-      # Log the current IP and the time taken
-      Log.info { "IP API: Current IP is #{ip_address.address} and took #{elapsed_time.total_seconds}s"}
-
+      Log.info { "IP API: Current IP is #{ip_address.address} and took #{elapsed_time.total_seconds}s" }
       ip_address.address
     rescue Socket::Error
-      # Raise an IPError if there's an issue with the fetched IP
-      raise IPError.new("IP API: Invalid IP from #{IP_API_HOST}")
+      raise IPError.new("IP API: Invalid IP from #{ipv6 ? IP_API_HOST_V6 : IP_API_HOST_V4}")
     end
 
-    private def self.execute_request : HTTP::Client::Response
-      # Create an HTTP client with a timeout for the connection
-      client = HTTP::Client.new(URI.new("https", IP_API_HOST))
+    private def self.execute_request(ipv6 : Bool = false) : HTTP::Client::Response
+      host = ipv6 ? IP_API_HOST_V6 : IP_API_HOST_V4
+      client = HTTP::Client.new(URI.new("https", host))
       client.connect_timeout = 10.seconds
-
-      # Make a GET request to the API
       client.get("/")
     rescue IO::TimeoutError | Socket::Addrinfo::Error | Socket::ConnectError
       HTTP::Client::Response.new(408)
     end
 
     private def self.parse_response(response : HTTP::Client::Response) : String
-      # If the response status code is 200, return the response body (IP address)
       return response.body if response.status_code == 200
 
-      # Generate an error message based on the response status code
-      error_message = if response.status_code == 408
+      error_message = case response.status_code
+                      when 408
                         "IP API: Timeout error, please check your internet connection or IP API status."
                       else
-                        "IP API: Unknown error, please report this to the poject issue tracker."
+                        "IP API: Unknown error, please report this to the project issue tracker."
                       end
-
-      # Raise an IPError with the generated error message
       raise IPError.new(error_message)
     end
   end

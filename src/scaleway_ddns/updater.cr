@@ -1,38 +1,19 @@
 module ScalewayDDNS
   # The Updater class handles the actual DDNS update process.
   class Updater
-    # Initializes an instance of the Updater class with a configuration object.
     def initialize(@config : Config)
-      # Create a new instance of the Request class with the provided Scaleway secret key.
-      @request = Request.new(config.scw_secret_key.to_s)
+      @request = Request.new(@config.scw_secret_key.to_s)
     end
 
     # Initiates the DNS update process and continuously updates the DNS records based on the configured interval.
     def run
-      # Check if the domain list is empty in the configuration.
-      if @config.domain_list.none?
-        raise GlobalError.new("Empty domain list, please check configuration variables.")
-      end
+      raise_if_domain_list_empty
 
-      # Start an infinite loop to keep updating DNS records.
       loop do
         Log.info { "Starting DNS update..." }
-
-        # Attempt to fetch the current public IP address.
-        begin
-          current_ip = IP.current_ip
-
-          # Iterate through the list of domains and update each domain's DNS record.
-          @config.domain_list.each do |domain|
-            update_single_domain(domain, current_ip)
-          end
-        rescue exception : IPError
-          Log.error { exception.message }
-        end
-
+        update_all_domains
         Log.info { "DNS update finished, sleeping..." }
-        # Sleep for the specified idle interval before the next update.
-        sleep(@config.idle_minutes * 60)
+        sleep(@config.idle_minutes.minutes)
       end
     rescue exception : GlobalError
       Log.error { exception.message }
@@ -40,31 +21,60 @@ module ScalewayDDNS
       exit(1)
     end
 
-    private def update_single_domain(domain : String, ip : String)
-      # Extract the root domain and subdomain from the full domain name.
-      root_domain = domain.split('.')[-2..].join(".")
-      sub_domain = domain.split('.')[..-3].join(".")
-
-      # Find the address record associated with the subdomain in the DNS records.
-      address_record = @request.address_record_list(root_domain)
-                               .find { |record| record[:name] == sub_domain }
-
-      # If no matching address record is found, log a warning.
-      unless address_record
-        Log.warn { "No matching subdomain name: #{sub_domain}" }
-        return
+    private def raise_if_domain_list_empty
+      if @config.domain_list.none?
+        raise GlobalError.new("Empty domain list, please check configuration variables.")
       end
+    end
 
-      # Check if the current IP matches the IP in the address record.
-      if address_record[:data] == ip
-        Log.info { "Identical IP address for #{domain}, no update required "}
-        return
+    private def update_all_domains
+      ips = IP.current_ips(@config.enable_ipv4?, @config.enable_ipv6?)
+      @config.domain_list.each { |domain| update_domain(domain, ips) }
+    rescue exception : IPError
+      Log.error { exception.message }
+    end
+
+    private def update_domain(domain : String, ips : Hash(String, String))
+      root_domain, sub_domain = extract_domains(domain)
+      address_records = @request.address_record_list(root_domain)
+
+      {"ipv4", "ipv6"}.each do |version|
+        update_record_if_needed(domain, sub_domain, root_domain, address_records, ips, version)
       end
-
-      # Update the address record with the new IP.
-      @request.update_address_record(root_domain, ip , address_record)
     rescue exception : RequestError
       Log.error { exception.message }
+    end
+
+    private def extract_domains(domain : String) : Tuple(String, String)
+      parts = domain.split('.')
+      root_domain = parts[-2..].join(".")
+      sub_domain = parts[..-3].join(".")
+      {root_domain, sub_domain}
+    end
+
+    private def update_record_if_needed(
+      domain : String,
+      sub_domain : String,
+      root_domain : String,
+      address_records : Array(Hash(Symbol, Int32 | String)),
+      ips : Hash(String, String),
+      version : String
+    )
+      return unless ips[version]?
+      record_type = version == "ipv4" ? "A" : "AAAA"
+      address_record = address_records.find { |record| record[:name] == sub_domain && record[:type] == record_type }
+
+      unless address_record
+        Log.warn { "No matching #{record_type} record for subdomain name: #{sub_domain}" }
+        return
+      end
+
+      if address_record[:data] == ips[version]
+        Log.info { "Identical #{record_type} address for #{domain}, no update required " }
+        return
+      end
+
+      @request.update_address_record(root_domain, ips[version], address_record)
     end
   end
 end
