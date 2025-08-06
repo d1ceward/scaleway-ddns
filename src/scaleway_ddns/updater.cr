@@ -60,7 +60,8 @@ module ScalewayDDNS
       ips : Hash(String, String),
       version : String
     )
-      return unless ips[version]?
+      return if !ips[version]? || ips[version].empty?
+
       record_type = version == "ipv4" ? "A" : "AAAA"
       address_record = address_records.find { |record| record[:name] == sub_domain && record[:type] == record_type }
 
