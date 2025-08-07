@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="2.0.0">
+<meta name="crystal_docs.project_version" content="2.0.1">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Request - scaleway-ddns 2.0.0</title>
+  <title>ScalewayDDNS::Request - scaleway-ddns 2.0.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.0.0
+        2.0.1
       </span>
     </div>
   </div>
@@ -128,17 +128,6 @@
 
 
 
-  <h2>
-    <a id="overview" class="anchor" href="#overview">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Overview
-  </h2>
-
-  <p>The Request class handles interactions with the Scaleway API for managing DNS records.</p>
-
 
 
 
@@ -187,10 +176,6 @@
         <strong>SCW_API_HOST</strong> = <code><span class="s">&quot;api.scaleway.com&quot;</span></code>
       </dt>
       
-      <dd class="entry-const-doc">
-        <p>The host of the Scaleway API used for DNS record management.</p>
-      </dd>
-      
     
   </dl>
 
@@ -209,8 +194,6 @@
     
       <li class="entry-summary">
         <a href="#new%28scw_secret_key%3AString%29-class-method" class="signature"><strong>.new</strong>(scw_secret_key : String)</a>
-        
-          <div class="summary"><p>Creates a new instance of <code><a href="../ScalewayDDNS/Request.html">ScalewayDDNS::Request</a></code> with given Scaleway secret key.</p></div>
         
       </li>
     
@@ -235,14 +218,14 @@
       <li class="entry-summary">
         <a href="#address_record_list%28domain%3AString%29%3AArray%28Hash%28Symbol%2CString%7CInt32%29%29-instance-method" class="signature"><strong>#address_record_list</strong>(domain : String) : Array(Hash(Symbol, String | Int32))</a>
         
-          <div class="summary"><p>Get a list of A (address) record from the Scaleway API for a given domain.</p></div>
+          <div class="summary"><p>Get a list of A and AAAA records from the Scaleway API for a given domain.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AHash%28Symbol%2CString%7CInt32%29%29-instance-method" class="signature"><strong>#update_address_record</strong>(domain : String, ip : String, record : Hash(Symbol, String | Int32))</a>
+        <a href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AHash%28Symbol%2CString%7CInt32%29%2Crecord_type%3AString%29-instance-method" class="signature"><strong>#update_address_record</strong>(domain : String, ip : String, record : Hash(Symbol, String | Int32), record_type : String)</a>
         
-          <div class="summary"><p>Update an A (address) record in the Scaleway API for a given domain.</p></div>
+          <div class="summary"><p>Update an address record (A or AAAA) in the Scaleway API for a given domain.</p></div>
         
       </li>
     
@@ -298,11 +281,6 @@
         <a class="method-permalink" href="#new%28scw_secret_key%3AString%29-class-method">#</a>
       </div>
       
-        <div class="doc">
-          
-          <p>Creates a new instance of <code><a href="../ScalewayDDNS/Request.html">ScalewayDDNS::Request</a></code> with given Scaleway secret key.</p>
-        </div>
-      
       <br/>
       <div>
         
@@ -335,12 +313,7 @@
       
         <div class="doc">
           
-          <p>Get a list of A (address) record from the Scaleway API for a given domain.</p>
-<pre><code class="language-crystal"><span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Request</span>.address_record_list(<span class="s">&quot;example.com&quot;</span>)
-<span class="c"># =&gt; [{ :id =&gt; 1, :name =&gt; &quot;&quot; :ttl =&gt; 60 }, { :id =&gt; 2, :name =&gt; &quot;mail&quot; :ttl =&gt; 120 }]</span>
-
-<span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Request</span>.address_record_list(<span class="s">&quot;invalid.com&quot;</span>)
-<span class="c"># =&gt; Scaleway API: Unauthorized, please check configuration variables.</span></code></pre>
+          <p>Get a list of A and AAAA records from the Scaleway API for a given domain.</p>
         </div>
       
       <br/>
@@ -349,18 +322,17 @@
       </div>
     </div>
   
-    <div class="entry-detail" id="update_address_record(domain:String,ip:String,record:Hash(Symbol,String|Int32))-instance-method">
+    <div class="entry-detail" id="update_address_record(domain:String,ip:String,record:Hash(Symbol,String|Int32),record_type:String)-instance-method">
       <div class="signature">
         
-        def <strong>update_address_record</strong>(domain : String, ip : String, record : Hash(Symbol, String | Int32))
+        def <strong>update_address_record</strong>(domain : String, ip : String, record : Hash(Symbol, String | Int32), record_type : String)
 
-        <a class="method-permalink" href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AHash%28Symbol%2CString%7CInt32%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AHash%28Symbol%2CString%7CInt32%29%2Crecord_type%3AString%29-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Update an A (address) record in the Scaleway API for a given domain.</p>
-<pre><code class="language-crystal"><span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Request</span>.update_address_record(<span class="s">&quot;example.com&quot;</span>, <span class="s">&quot;127.0.0.1&quot;</span>, record)</code></pre>
+          <p>Update an address record (A or AAAA) in the Scaleway API for a given domain.</p>
         </div>
       
       <br/>

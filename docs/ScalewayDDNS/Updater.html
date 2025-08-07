@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="2.0.0">
+<meta name="crystal_docs.project_version" content="2.0.1">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Updater - scaleway-ddns 2.0.0</title>
+  <title>ScalewayDDNS::Updater - scaleway-ddns 2.0.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.0.0
+        2.0.1
       </span>
     </div>
   </div>
@@ -128,17 +128,6 @@
 
 
 
-  <h2>
-    <a id="overview" class="anchor" href="#overview">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Overview
-  </h2>
-
-  <p>The Updater class handles the actual DDNS update process.</p>
-
 
 
 
@@ -170,6 +159,25 @@
   
 
 
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="RECORD_TYPES">
+        <strong>RECORD_TYPES</strong> = <code>{<span class="s">&quot;ipv4&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;A&quot;</span>, <span class="s">&quot;ipv6&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;AAAA&quot;</span>}</code>
+      </dt>
+      
+    
+  </dl>
 
 
 
@@ -209,8 +217,6 @@
     
       <li class="entry-summary">
         <a href="#run-instance-method" class="signature"><strong>#run</strong></a>
-        
-          <div class="summary"><p>Initiates the DNS update process and continuously updates the DNS records based on the configured interval.</p></div>
         
       </li>
     
@@ -295,11 +301,6 @@
 
         <a class="method-permalink" href="#run-instance-method">#</a>
       </div>
-      
-        <div class="doc">
-          
-          <p>Initiates the DNS update process and continuously updates the DNS records based on the configured interval.</p>
-        </div>
       
       <br/>
       <div>
