@@ -1,89 +1,157 @@
 require "../spec_helper"
 
 describe ScalewayDDNS::Config do
+  around_each do |example|
+    original_env = ENV.to_h.dup
+    example.run
+    ENV.clear
+    original_env.each { |k, v| ENV[k] = v }
+  end
+
   describe "#scw_secret_key" do
-    it "should return correct value from env" do
-      ENV["SCW_SECRET_KEY"] = "123456789"
-      instance = ScalewayDDNS::Config.new
-
-      instance.scw_secret_key.should eq(ENV["SCW_SECRET_KEY"])
+    context "when SCW_SECRET_KEY is set" do
+      it "returns the value from env" do
+        ENV["SCW_SECRET_KEY"] = "123456789"
+        config = ScalewayDDNS::Config.new
+        config.scw_secret_key.should eq("123456789")
+      end
     end
 
-    it "should return default empty string" do
-      ENV.delete("SCW_SECRET_KEY")
-      instance = ScalewayDDNS::Config.new
-
-      instance.scw_secret_key.should eq("")
+    context "when SCW_SECRET_KEY is not set" do
+      it "returns an empty string" do
+        ENV.delete("SCW_SECRET_KEY")
+        config = ScalewayDDNS::Config.new
+        config.scw_secret_key.should eq("")
+      end
     end
 
-    it "should return given secret key by setter in priority" do
+    it "prefers the setter value over env" do
       ENV["SCW_SECRET_KEY"] = "123456789"
-      instance = ScalewayDDNS::Config.new
-      instance.scw_secret_key = "FBISurveillanceVan"
-
-      instance.scw_secret_key.should eq("FBISurveillanceVan")
+      config = ScalewayDDNS::Config.new
+      config.scw_secret_key = "FBISurveillanceVan"
+      config.scw_secret_key.should eq("FBISurveillanceVan")
     end
   end
 
   describe "#idle_minutes" do
-    it "should return correct value from env" do
-      ENV["IDLE_MINUTES"] = "10"
-      instance = ScalewayDDNS::Config.new
-
-      instance.idle_minutes.should eq(ENV["IDLE_MINUTES"].to_i)
+    context "when IDLE_MINUTES is valid" do
+      it "returns the value from env" do
+        ENV["IDLE_MINUTES"] = "10"
+        config = ScalewayDDNS::Config.new
+        config.idle_minutes.should eq(10)
+      end
     end
 
-    it "should return default value" do
-      ENV.delete("IDLE_MINUTES")
-      instance = ScalewayDDNS::Config.new
-
-      instance.idle_minutes.should eq(60)
+    context "when IDLE_MINUTES is not set" do
+      it "returns the default value" do
+        ENV.delete("IDLE_MINUTES")
+        config = ScalewayDDNS::Config.new
+        config.idle_minutes.should eq(60)
+      end
     end
 
-    it "should return given idle minutes by setter in priority" do
+    it "prefers the setter value over env" do
       ENV["IDLE_MINUTES"] = "21"
-      instance = ScalewayDDNS::Config.new
-      instance.idle_minutes = 42
-
-      instance.idle_minutes.should eq(42)
+      config = ScalewayDDNS::Config.new
+      config.idle_minutes = 42
+      config.idle_minutes.should eq(42)
     end
 
-    it "should limit the minimum of idle minutes" do
+    it "limits the minimum of idle minutes" do
       ENV["IDLE_MINUTES"] = "-1"
-      instance = ScalewayDDNS::Config.new
-
-      instance.idle_minutes.should eq(60)
+      config = ScalewayDDNS::Config.new
+      config.idle_minutes.should eq(60)
     end
 
-    it "should limit the maximum of idle minutes" do
+    it "limits the maximum of idle minutes" do
       ENV["IDLE_MINUTES"] = "1441"
-      instance = ScalewayDDNS::Config.new
+      config = ScalewayDDNS::Config.new
+      config.idle_minutes.should eq(60)
+    end
 
-      instance.idle_minutes.should eq(60)
+    it "handles non-integer values gracefully" do
+      ENV["IDLE_MINUTES"] = "notanumber"
+      config = ScalewayDDNS::Config.new
+      config.idle_minutes.should eq(60)
     end
   end
 
   describe "#domain_list" do
-    it "should return correct value from env" do
-      ENV["DOMAIN_LIST"] = "nogoogle.com, scaleway.com"
-      instance = ScalewayDDNS::Config.new
-
-      instance.domain_list.should eq(["nogoogle.com", "scaleway.com"])
+    context "when DOMAIN_LIST is set" do
+      it "returns the parsed array" do
+        ENV["DOMAIN_LIST"] = "nogoogle.com, scaleway.com"
+        config = ScalewayDDNS::Config.new
+        config.domain_list.should eq(["nogoogle.com", "scaleway.com"])
+      end
     end
 
-    it "should return default empty array" do
-      ENV.delete("DOMAIN_LIST")
-      instance = ScalewayDDNS::Config.new
-
-      instance.domain_list.should eq([] of Array(String))
+    context "when DOMAIN_LIST is not set" do
+      it "returns an empty array" do
+        ENV.delete("DOMAIN_LIST")
+        config = ScalewayDDNS::Config.new
+        config.domain_list.should eq([] of String)
+      end
     end
 
-    it "should return given domain array by setter in priority" do
+    it "prefers the setter value over env" do
       ENV["DOMAIN_LIST"] = "nogoogle.com, scaleway.com"
-      instance = ScalewayDDNS::Config.new
-      instance.domain_list = ["ddns.com", "wowsuch.com"]
+      config = ScalewayDDNS::Config.new
+      config.domain_list = ["ddns.com", "wowsuch.com"]
+      config.domain_list.should eq(["ddns.com", "wowsuch.com"])
+    end
 
-      instance.domain_list.should eq(["ddns.com", "wowsuch.com"])
+    it "ignores whitespace and blank entries" do
+      ENV["DOMAIN_LIST"] = "  ,foo.com,   , bar.com ,"
+      config = ScalewayDDNS::Config.new
+      config.domain_list.should eq(["foo.com", "bar.com"])
+    end
+  end
+
+  describe "#enable_ipv4" do
+    it "defaults to true if unset" do
+      ENV.delete("ENABLE_IPV4")
+      config = ScalewayDDNS::Config.new
+      config.enable_ipv4?.should be_true
+    end
+
+    it "parses falsy values as false" do
+      ["false", "no", "0", "off", "disabled", "none", "null", "nil", ""].each do |val|
+        ENV["ENABLE_IPV4"] = val
+        config = ScalewayDDNS::Config.new
+        config.enable_ipv4?.should be_false
+      end
+    end
+
+    it "parses truthy values as true" do
+      ["true", "yes", "1", "on", "enabled"].each do |val|
+        ENV["ENABLE_IPV4"] = val
+        config = ScalewayDDNS::Config.new
+        config.enable_ipv4?.should be_true
+      end
+    end
+  end
+
+  describe "#enable_ipv6" do
+    it "defaults to true if unset" do
+      ENV.delete("ENABLE_IPV6")
+      config = ScalewayDDNS::Config.new
+      config.enable_ipv6?.should be_true
+    end
+
+    it "parses falsy values as false" do
+      ["false", "no", "0", "off", "disabled", "none", "null", "nil", ""].each do |val|
+        ENV["ENABLE_IPV6"] = val
+        config = ScalewayDDNS::Config.new
+        config.enable_ipv6?.should be_false
+      end
+    end
+
+    it "parses truthy values as true" do
+      ["true", "yes", "1", "on", "enabled"].each do |val|
+        ENV["ENABLE_IPV6"] = val
+        config = ScalewayDDNS::Config.new
+        config.enable_ipv6?.should be_true
+      end
     end
   end
 end
