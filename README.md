@@ -18,6 +18,8 @@ docker run -d \
   -e SCW_SECRET_KEY="super-secret-from-scaleway" \
   -e IDLE_MINUTES="10" \
   -e DOMAIN_LIST="myfirstdomain.com,anotherone.com" \
+  -e ENABLE_IPV4="true" \
+  -e ENABLE_IPV6="false" \
   d1ceward/scaleway-ddns:latest
 ```
 
@@ -32,6 +34,8 @@ services:
       SCW_SECRET_KEY: super-secret-from-scaleway
       IDLE_MINUTES: 10
       DOMAIN_LIST: myfirstdomain.com,anotherone.com
+      ENABLE_IPV4: true # Optional, enables IPv4 address updates (default: true)
+      ENABLE_IPV6: true # Optional, enables IPv6 address updates (default: false)
 ```
 
 ### Linux
@@ -76,6 +80,14 @@ The newly created binary should be at `bin/scaleway-ddns`
 ```shell
 crystal spec
 ```
+
+## Environment Variables
+
+- `SCW_SECRET_KEY` (**required**): Secret key from Scaleway required for IP update.
+- `IDLE_MINUTES`: Number of minutes of inactivity between IP checks (default: 60, min: 1, max: 1440).
+- `DOMAIN_LIST`: Comma-separated list of domains to update (e.g., `example.com,another.com`).
+- `ENABLE_IPV4`: Enables IPv4 address updates. Set to `false` to disable (default: `true`).
+- `ENABLE_IPV6`: Enables IPv6 address updates. Set to `true` to enable (default: `false`).
 
 ## Contributors
 
