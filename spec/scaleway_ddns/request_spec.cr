@@ -17,17 +17,22 @@ describe ScalewayDDNS::Request do
     it "returns parsed records for a valid domain" do
       WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=A")
         .to_return(status: 200, body: record_response)
+      WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=AAAA")
+        .to_return(status: 200, body: "{\"records\":[]}")
       records = request.address_record_list(domain)
       records.size.should eq(2)
       records[0][:id].should eq("1")
       records[0][:data].should eq("127.0.0.1")
       records[0][:name].should eq("@")
       records[0][:ttl].should eq(60)
+      records[0][:type].should eq("A")
     end
 
     it "raises on unauthorized response" do
       WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=A")
         .to_return(status: 401, body: "")
+      WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=AAAA")
+        .to_return(status: 200, body: "{\"records\":[]}")
       expect_raises(ScalewayDDNS::RequestError) do
         request.address_record_list(domain)
       end
@@ -36,6 +41,8 @@ describe ScalewayDDNS::Request do
     it "raises on timeout response" do
       WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=A")
         .to_return(status: 408, body: "")
+      WebMock.stub(:get, "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records?type=AAAA")
+        .to_return(status: 200, body: "{\"records\":[]}")
       expect_raises(ScalewayDDNS::RequestError) do
         request.address_record_list(domain)
       end
@@ -43,7 +50,7 @@ describe ScalewayDDNS::Request do
   end
 
   describe "#update_address_record" do
-    record = { :id => "1", :name => "@", :ttl => 60, :data => "127.0.0.1" } of Symbol => String | Int32
+    record = { :id => "1", :name => "@", :ttl => 60, :data => "127.0.0.1", :type => "A" } of Symbol => String | Int32
     ip = "127.0.0.2"
     update_url = "https://api.scaleway.com/domain/v2beta1/dns-zones/#{domain}/records"
     update_body = {
@@ -63,7 +70,7 @@ describe ScalewayDDNS::Request do
       WebMock.stub(:patch, update_url)
         .with(body: update_body)
         .to_return(status: 200, body: "{\"result\": \"ok\"}")
-      response = request.update_address_record(domain, ip, record)
+      response = request.update_address_record(domain, ip, record, "A")
       response["result"].should eq("ok")
     end
 
@@ -71,7 +78,7 @@ describe ScalewayDDNS::Request do
       WebMock.stub(:patch, update_url)
         .to_return(status: 401, body: "")
       expect_raises(ScalewayDDNS::RequestError) do
-        request.update_address_record(domain, ip, record)
+        request.update_address_record(domain, ip, record, "A")
       end
     end
   end

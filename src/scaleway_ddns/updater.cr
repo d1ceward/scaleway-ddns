@@ -1,11 +1,11 @@
 module ScalewayDDNS
-  # The Updater class handles the actual DDNS update process.
   class Updater
+    RECORD_TYPES = {"ipv4" => "A", "ipv6" => "AAAA"}
+
     def initialize(@config : Config)
       @request = Request.new(@config.scw_secret_key.to_s)
     end
 
-    # Initiates the DNS update process and continuously updates the DNS records based on the configured interval.
     def run
       raise_if_domain_list_empty
 
@@ -38,8 +38,8 @@ module ScalewayDDNS
       root_domain, sub_domain = extract_domains(domain)
       address_records = @request.address_record_list(root_domain)
 
-      {"ipv4", "ipv6"}.each do |version|
-        update_record_if_needed(domain, sub_domain, root_domain, address_records, ips, version)
+      RECORD_TYPES.each do |version, record_type|
+        update_record_if_needed(domain, sub_domain, root_domain, address_records, ips, version, record_type)
       end
     rescue exception : RequestError
       Log.error { exception.message }
@@ -58,24 +58,27 @@ module ScalewayDDNS
       root_domain : String,
       address_records : Array(Hash(Symbol, Int32 | String)),
       ips : Hash(String, String),
-      version : String
+      version : String,
+      record_type : String
     )
-      return if !ips[version]? || ips[version].empty?
+      ip = ips[version]?
+      return if ip.nil? || ip.empty?
 
-      record_type = version == "ipv4" ? "A" : "AAAA"
-      address_record = address_records.find { |record| record[:name] == sub_domain && record[:type] == record_type }
+      address_record = address_records.find do |record|
+        record[:name] == sub_domain && record[:type] == record_type
+      end
 
       unless address_record
         Log.warn { "No matching #{record_type} record for subdomain name: #{sub_domain}" }
         return
       end
 
-      if address_record[:data] == ips[version]
-        Log.info { "Identical #{record_type} address for #{domain}, no update required " }
+      if address_record[:data] == ip
+        Log.info { "Identical #{record_type} address for #{domain}, no update required" }
         return
       end
 
-      @request.update_address_record(root_domain, ips[version], address_record)
+      @request.update_address_record(root_domain, ip, address_record, record_type)
     end
   end
 end
