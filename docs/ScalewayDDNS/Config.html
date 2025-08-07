@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="1.12.2">
+<meta name="crystal_docs.project_version" content="2.0.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Config - scaleway-ddns 1.12.2</title>
+  <title>ScalewayDDNS::Config - scaleway-ddns 2.0.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        1.12.2
+        2.0.0
       </span>
     </div>
   </div>
@@ -137,10 +137,8 @@
     Overview
   </h2>
 
-  <p>A configuration entry for the pogram.</p>
-<p>Config can be loaded from environment variables and adjusted.</p>
-<pre><code class="language-crystal">config <span class="o">=</span> <span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Config</span>.new
-config.idle_minutes <span class="o">=</span> my_idle_minutes</code></pre>
+  <p>Configuration for the Scaleway DDNS program.</p>
+<p>Can be loaded from environment variables and adjusted at runtime.</p>
 
 
 
@@ -173,6 +171,29 @@ config.idle_minutes <span class="o">=</span> my_idle_minutes</code></pre>
   
 
 
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="FALSY_VALUES">
+        <strong>FALSY_VALUES</strong> = <code>[<span class="s">&quot;false&quot;</span>, <span class="s">&quot;n&quot;</span>, <span class="s">&quot;no&quot;</span>, <span class="s">&quot;0&quot;</span>, <span class="s">&quot;off&quot;</span>, <span class="s">&quot;disabled&quot;</span>, <span class="s">&quot;none&quot;</span>, <span class="s">&quot;null&quot;</span>, <span class="s">&quot;nil&quot;</span>, <span class="s">&quot;&quot;</span>, <span class="n">false</span>, <span class="n">0</span>] <span class="k">of</span> <span class="t">String</span> <span class="o">|</span> <span class="t">Bool</span> <span class="o">|</span> <span class="t">Int32</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Falsy values for boolean environment parsing.</p>
+      </dd>
+      
+    
+  </dl>
 
 
 
@@ -215,14 +236,42 @@ config.idle_minutes <span class="o">=</span> my_idle_minutes</code></pre>
       <li class="entry-summary">
         <a href="#domain_list%3AArray%28String%29-instance-method" class="signature"><strong>#domain_list</strong> : Array(String)</a>
         
-          <div class="summary"><p>Represents a list of domains whose address record needs to be updated.</p></div>
+          <div class="summary"><p>List of domains whose address record needs to be updated.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#domain_list%3D%28domain_list%3AArray%28String%29%29-instance-method" class="signature"><strong>#domain_list=</strong>(domain_list : Array(String))</a>
         
-          <div class="summary"><p>Represents a list of domains whose address record needs to be updated.</p></div>
+          <div class="summary"><p>List of domains whose address record needs to be updated.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enable_ipv4%3D%28enable_ipv4%3ABool%29-instance-method" class="signature"><strong>#enable_ipv4=</strong>(enable_ipv4 : Bool)</a>
+        
+          <div class="summary"><p>Enables IPv4 address updates.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enable_ipv4%3F%3ABool-instance-method" class="signature"><strong>#enable_ipv4?</strong> : Bool</a>
+        
+          <div class="summary"><p>Enables IPv4 address updates.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enable_ipv6%3D%28enable_ipv6%3ABool%29-instance-method" class="signature"><strong>#enable_ipv6=</strong>(enable_ipv6 : Bool)</a>
+        
+          <div class="summary"><p>Enables IPv6 address updates.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#enable_ipv6%3F%3ABool-instance-method" class="signature"><strong>#enable_ipv6?</strong> : Bool</a>
+        
+          <div class="summary"><p>Enables IPv6 address updates.</p></div>
         
       </li>
     
@@ -343,9 +392,7 @@ config.idle_minutes <span class="o">=</span> my_idle_minutes</code></pre>
       
         <div class="doc">
           
-          <p>Represents a list of domains whose address record needs to be updated.</p>
-<pre><code class="language-crystal">config <span class="o">=</span> <span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Config</span>.new
-config.domain_list <span class="o">=</span> [<span class="s">&quot;example.com&quot;</span>, <span class="s">&quot;another.com&quot;</span>]</code></pre>
+          <p>List of domains whose address record needs to be updated.</p>
         </div>
       
       <br/>
@@ -364,9 +411,83 @@ config.domain_list <span class="o">=</span> [<span class="s">&quot;example.com&q
       
         <div class="doc">
           
-          <p>Represents a list of domains whose address record needs to be updated.</p>
-<pre><code class="language-crystal">config <span class="o">=</span> <span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">Config</span>.new
-config.domain_list <span class="o">=</span> [<span class="s">&quot;example.com&quot;</span>, <span class="s">&quot;another.com&quot;</span>]</code></pre>
+          <p>List of domains whose address record needs to be updated.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enable_ipv4=(enable_ipv4:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>enable_ipv4=</strong>(enable_ipv4 : Bool)
+
+        <a class="method-permalink" href="#enable_ipv4%3D%28enable_ipv4%3ABool%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Enables IPv4 address updates.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enable_ipv4?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>enable_ipv4?</strong> : Bool
+
+        <a class="method-permalink" href="#enable_ipv4%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Enables IPv4 address updates.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enable_ipv6=(enable_ipv6:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>enable_ipv6=</strong>(enable_ipv6 : Bool)
+
+        <a class="method-permalink" href="#enable_ipv6%3D%28enable_ipv6%3ABool%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Enables IPv6 address updates.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="enable_ipv6?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>enable_ipv6?</strong> : Bool
+
+        <a class="method-permalink" href="#enable_ipv6%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Enables IPv6 address updates.</p>
         </div>
       
       <br/>

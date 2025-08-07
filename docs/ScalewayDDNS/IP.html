@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="1.12.2">
+<meta name="crystal_docs.project_version" content="2.0.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::IP - scaleway-ddns 1.12.2</title>
+  <title>ScalewayDDNS::IP - scaleway-ddns 2.0.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        1.12.2
+        2.0.0
       </span>
     </div>
   </div>
@@ -183,13 +183,14 @@
   
   <dl>
     
-      <dt class="entry-const" id="IP_API_HOST">
-        <strong>IP_API_HOST</strong> = <code><span class="s">&quot;api.ipify.org&quot;</span></code>
+      <dt class="entry-const" id="IP_API_HOST_V4">
+        <strong>IP_API_HOST_V4</strong> = <code><span class="s">&quot;api.ipify.org&quot;</span></code>
       </dt>
       
-      <dd class="entry-const-doc">
-        <p>The host of the IP API used to fetch the current IP address.</p>
-      </dd>
+    
+      <dt class="entry-const" id="IP_API_HOST_V6">
+        <strong>IP_API_HOST_V6</strong> = <code><span class="s">&quot;api6.ipify.org&quot;</span></code>
+      </dt>
       
     
   </dl>
@@ -210,9 +211,9 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#current_ip%3AString-class-method" class="signature"><strong>.current_ip</strong> : String</a>
+        <a href="#current_ips%28ipv4%3ABool%3Dtrue%2Cipv6%3ABool%3Dfalse%29%3AHash%28String%2CString%29-class-method" class="signature"><strong>.current_ips</strong>(ipv4 : Bool = <span class="n">true</span>, ipv6 : Bool = <span class="n">false</span>) : Hash(String, String)</a>
         
-          <div class="summary"><p>Return current IP address from external API as string.</p></div>
+          <div class="summary"><p>Returns a hash of enabled IP versions and their addresses, e.g.</p></div>
         
       </li>
     
@@ -266,21 +267,17 @@
     Class Method Detail
   </h2>
   
-    <div class="entry-detail" id="current_ip:String-class-method">
+    <div class="entry-detail" id="current_ips(ipv4:Bool=true,ipv6:Bool=false):Hash(String,String)-class-method">
       <div class="signature">
         
-        def self.<strong>current_ip</strong> : String
+        def self.<strong>current_ips</strong>(ipv4 : Bool = <span class="n">true</span>, ipv6 : Bool = <span class="n">false</span>) : Hash(String, String)
 
-        <a class="method-permalink" href="#current_ip%3AString-class-method">#</a>
+        <a class="method-permalink" href="#current_ips%28ipv4%3ABool%3Dtrue%2Cipv6%3ABool%3Dfalse%29%3AHash%28String%2CString%29-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Return current IP address from external API as string.</p>
-<pre><code class="language-crystal"><span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">IP</span>.current_ip <span class="c"># =&gt; &quot;127.0.0.1&quot;</span>
-
-<span class="c"># External API give an invalid response</span>
-<span class="t">ScalewayDDNS</span><span class="t">::</span><span class="t">IP</span>.current_ip <span class="c"># =&gt; IPError: IP API: Invalid IP from external.api.com</span></code></pre>
+          <p>Returns a hash of enabled IP versions and their addresses, e.g. {&quot;ipv4&quot; =&gt; &quot;1.2.3.4&quot;, &quot;ipv6&quot; =&gt; &quot;::1&quot;}</p>
         </div>
       
       <br/>

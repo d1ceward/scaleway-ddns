@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="1.12.2">
+<meta name="crystal_docs.project_version" content="2.0.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>scaleway-ddns 1.12.2</title>
+  <title>scaleway-ddns 2.0.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        1.12.2
+        2.0.0
       </span>
     </div>
   </div>
@@ -114,10 +114,10 @@
 
 
 <div class="main-content">
-<h1><a id="scaleway-ddns-v1.12.2" class="anchor" href="#scaleway-ddns-v1.12.2">  <svg class="octicon-link" aria-hidden="true">
+<h1><a id="scaleway-ddns-v2.0.0" class="anchor" href="#scaleway-ddns-v2.0.0">  <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>scaleway-ddns (v1.12.2)</h1>
+</a>scaleway-ddns (v2.0.0)</h1>
 <p><img src="https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master" alt="GitHub Workflow Status (main)" />
 <a href="https://hub.docker.com/r/d1ceward/scaleway-ddns"><img src="https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg" alt="Docker Pulls" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/issues"><img src="https://img.shields.io/github/issues/d1ceward/scaleway-ddns" alt="GitHub issues" /></a>
@@ -139,6 +139,8 @@
   -e SCW_SECRET_KEY=&quot;super-secret-from-scaleway&quot; \
   -e IDLE_MINUTES=&quot;10&quot; \
   -e DOMAIN_LIST=&quot;myfirstdomain.com,anotherone.com&quot; \
+  -e ENABLE_IPV4=&quot;true&quot; \
+  -e ENABLE_IPV6=&quot;false&quot; \
   d1ceward/scaleway-ddns:latest</code></pre>
 <p>With docker-compose file :</p>
 <pre><code class="language-yaml">---
@@ -149,14 +151,16 @@ services:
     environment:
       SCW_SECRET_KEY: super-secret-from-scaleway
       IDLE_MINUTES: 10
-      DOMAIN_LIST: myfirstdomain.com,anotherone.com</code></pre>
+      DOMAIN_LIST: myfirstdomain.com,anotherone.com
+      ENABLE_IPV4: true # Optional, enables IPv4 address updates (default: true)
+      ENABLE_IPV6: true # Optional, enables IPv6 address updates (default: false)</code></pre>
 <h3><a id="linux" class="anchor" href="#linux">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Linux</h3>
 <p>Download the executable file :</p>
-<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v1.12.2/scaleway-ddns-linux-amd64</code></pre>
+<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.0.0/scaleway-ddns-linux-amd64</code></pre>
 <p>Modify the executable's permissions :</p>
 <pre><code class="language-shell">chmod +x scaleway-ddns</code></pre>
 <p>Execution example :</p>
@@ -192,6 +196,18 @@ services:
   </svg>
 </a>Running tests</h3>
 <pre><code class="language-shell">crystal spec</code></pre>
+<h2><a id="environment-variables" class="anchor" href="#environment-variables">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Environment Variables</h2>
+<ul>
+<li><code>SCW_SECRET_KEY</code> (<strong>required</strong>): Secret key from Scaleway required for IP update.</li>
+<li><code>IDLE_MINUTES</code>: Number of minutes of inactivity between IP checks (default: 60, min: 1, max: 1440).</li>
+<li><code>DOMAIN_LIST</code>: Comma-separated list of domains to update (e.g., <code>example.com,another.com</code>).</li>
+<li><code>ENABLE_IPV4</code>: Enables IPv4 address updates. Set to <code>false</code> to disable (default: <code>true</code>).</li>
+<li><code>ENABLE_IPV6</code>: Enables IPv6 address updates. Set to <code>true</code> to enable (default: <code>false</code>).</li>
+</ul>
 <h2><a id="contributors" class="anchor" href="#contributors">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>

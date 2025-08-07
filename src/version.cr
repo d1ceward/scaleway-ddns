@@ -1,3 +1,3 @@
 module ScalewayDDNS
-  VERSION = "1.12.2"
+  VERSION = "2.0.0"
 end
