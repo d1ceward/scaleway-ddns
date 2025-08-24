@@ -1,7 +1,7 @@
 # scaleway-ddns (v2.1.1)
 ![GitHub Workflow Status (main)](https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master)
-[![Docker Pulls](https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg)](https://hub.docker.com/r/d1ceward/scaleway-ddns)
-[![GHCR Pulls](https://img.shields.io/badge/dynamic/json?color=blue&label=GHCR%20Pulls&query=downloads&url=https://ghcr.io/v2/d1ceward/scaleway-ddns/stats/pulls&logo=github)](https://github.com/users/d1ceward/packages/container/package/scaleway-ddns)
+[![Docker Pulls](https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg?logo=docker)](https://hub.docker.com/r/d1ceward/scaleway-ddns)
+[![GHCR](https://img.shields.io/badge/GHCR-Available-blue?logo=github)](https://github.com/users/d1ceward/packages/container/package/scaleway-ddns)
 [![GitHub issues](https://img.shields.io/github/issues/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/issues)
 [![GitHub license](https://img.shields.io/github/license/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/blob/master/LICENSE)
 
