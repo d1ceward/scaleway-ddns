@@ -13,12 +13,16 @@ Simple Scaleway dynamic DNS service by API written in Crystal.
 
 ### Docker
 
+You can run `scaleway-ddns` using Docker or Docker Compose. Replace example values with your actual configuration.
+
 #### Docker Hub
 
-With `docker run` command :
+Run directly from Docker Hub:
+
 ```shell
 docker run -d \
-  -e SCW_SECRET_KEY="super-secret-from-scaleway" \
+  --name scaleway-ddns \
+  -e SCW_SECRET_KEY="your-scaleway-secret-key" \
   -e IDLE_MINUTES="10" \
   -e DOMAIN_LIST="myfirstdomain.com,anotherone.com" \
   -e ENABLE_IPV4="true" \
@@ -28,10 +32,12 @@ docker run -d \
 
 #### GitHub Packages
 
-With `docker run` command :
+Run from GitHub Container Registry:
+
 ```shell
 docker run -d \
-  -e SCW_SECRET_KEY="super-secret-from-scaleway" \
+  --name scaleway-ddns \
+  -e SCW_SECRET_KEY="your-scaleway-secret-key" \
   -e IDLE_MINUTES="10" \
   -e DOMAIN_LIST="myfirstdomain.com,anotherone.com" \
   -e ENABLE_IPV4="true" \
@@ -39,38 +45,52 @@ docker run -d \
   ghcr.io/d1ceward/scaleway-ddns:latest
 ```
 
-With docker-compose file :
+#### Docker Compose
+
+Recommended for multi-container setups or easier management:
+
 ```yaml
----
 services:
   scaleway_ddns:
-  image: d1ceward/scaleway-ddns:latest # For Docker Hub
-  # Or use GitHub Packages:
-  # image: ghcr.io/d1ceward/scaleway-ddns:latest
+    image: d1ceward/scaleway-ddns:latest # Use Docker Hub image
+    # Or use GitHub Packages:
+    # image: ghcr.io/d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
-      SCW_SECRET_KEY: super-secret-from-scaleway
+      SCW_SECRET_KEY: your-scaleway-secret-key
       IDLE_MINUTES: 10
       DOMAIN_LIST: myfirstdomain.com,anotherone.com
-      ENABLE_IPV4: true # Optional, enables IPv4 address updates (default: true)
-      ENABLE_IPV6: true # Optional, enables IPv6 address updates (default: false)
+      ENABLE_IPV4: true   # Optional, enables IPv4 address updates (default: true)
+      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: false)
 ```
+
+**Environment Variables:**
+- `SCW_SECRET_KEY` (**required**): Your Scaleway API secret key.
+- `IDLE_MINUTES`: Minutes between IP checks (default: 60).
+- `DOMAIN_LIST`: Comma-separated domains to update.
+- `ENABLE_IPV4`: Set to `true` or `false` to enable/disable IPv4 updates.
+- `ENABLE_IPV6`: Set to `true` or `false` to enable/disable IPv6 updates.
+
+---
 
 ### Linux
 
-Download the executable file :
+Download the executable:
+
 ```shell
 wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.0.1/scaleway-ddns-linux-amd64
 ```
 
-Modify the executable's permissions :
+Make it executable:
+
 ```shell
 chmod +x scaleway-ddns
 ```
 
-Execution example :
+Run the service:
+
 ```shell
-scaleway-ddns run
+./scaleway-ddns run
 ```
 
 Documentation available here : https://d1ceward.github.io/scaleway-ddns/
