@@ -1,4 +1,4 @@
-# scaleway-ddns (v2.0.1)
+# scaleway-ddns (v2.1.0)
 ![GitHub Workflow Status (main)](https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg)](https://hub.docker.com/r/d1ceward/scaleway-ddns)
 [![GHCR Pulls](https://img.shields.io/badge/dynamic/json?color=blue&label=GHCR%20Pulls&query=downloads&url=https://ghcr.io/v2/d1ceward/scaleway-ddns/stats/pulls&logo=github)](https://github.com/users/d1ceward/packages/container/package/scaleway-ddns)
@@ -78,7 +78,7 @@ services:
 Download the executable:
 
 ```shell
-wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.0.1/scaleway-ddns-linux-amd64
+wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.1.0/scaleway-ddns-linux-amd64
 ```
 
 Make it executable:

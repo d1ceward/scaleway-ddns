@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.16.3">
-<meta name="crystal_docs.project_version" content="2.0.1">
+<meta name="crystal_docs.project_version" content="2.1.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>scaleway-ddns 2.0.1</title>
+  <title>scaleway-ddns 2.1.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.0.1
+        2.1.0
       </span>
     </div>
   </div>
@@ -114,12 +114,13 @@
 
 
 <div class="main-content">
-<h1><a id="scaleway-ddns-v2.0.1" class="anchor" href="#scaleway-ddns-v2.0.1">  <svg class="octicon-link" aria-hidden="true">
+<h1><a id="scaleway-ddns-v2.1.0" class="anchor" href="#scaleway-ddns-v2.1.0">  <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>scaleway-ddns (v2.0.1)</h1>
+</a>scaleway-ddns (v2.1.0)</h1>
 <p><img src="https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master" alt="GitHub Workflow Status (main)" />
 <a href="https://hub.docker.com/r/d1ceward/scaleway-ddns"><img src="https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg" alt="Docker Pulls" /></a>
+<a href="https://github.com/users/d1ceward/packages/container/package/scaleway-ddns"><img src="https://img.shields.io/badge/dynamic/json?color=blue&amp;label=GHCR%20Pulls&amp;query=downloads&amp;url=https://ghcr.io/v2/d1ceward/scaleway-ddns/stats/pulls&amp;logo=github" alt="GHCR Pulls" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/issues"><img src="https://img.shields.io/github/issues/d1ceward/scaleway-ddns" alt="GitHub issues" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/blob/master/LICENSE"><img src="https://img.shields.io/github/license/d1ceward/scaleway-ddns" alt="GitHub license" /></a></p>
 <p>Simple Scaleway dynamic DNS service by API written in Crystal.</p>
@@ -134,37 +135,73 @@
     <use href="#octicon-link"/>
   </svg>
 </a>Docker</h3>
-<p>With <code>docker run</code> command :</p>
+<p>You can run <code>scaleway-ddns</code> using Docker or Docker Compose. Replace example values with your actual configuration.</p>
+<h4><a id="docker-hub" class="anchor" href="#docker-hub">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Docker Hub</h4>
+<p>Run directly from Docker Hub:</p>
 <pre><code class="language-shell">docker run -d \
-  -e SCW_SECRET_KEY=&quot;super-secret-from-scaleway&quot; \
+  --name scaleway-ddns \
+  -e SCW_SECRET_KEY=&quot;your-scaleway-secret-key&quot; \
   -e IDLE_MINUTES=&quot;10&quot; \
   -e DOMAIN_LIST=&quot;myfirstdomain.com,anotherone.com&quot; \
   -e ENABLE_IPV4=&quot;true&quot; \
   -e ENABLE_IPV6=&quot;false&quot; \
   d1ceward/scaleway-ddns:latest</code></pre>
-<p>With docker-compose file :</p>
-<pre><code class="language-yaml">---
-services:
+<h4><a id="git-hub-packages" class="anchor" href="#git-hub-packages">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>GitHub Packages</h4>
+<p>Run from GitHub Container Registry:</p>
+<pre><code class="language-shell">docker run -d \
+  --name scaleway-ddns \
+  -e SCW_SECRET_KEY=&quot;your-scaleway-secret-key&quot; \
+  -e IDLE_MINUTES=&quot;10&quot; \
+  -e DOMAIN_LIST=&quot;myfirstdomain.com,anotherone.com&quot; \
+  -e ENABLE_IPV4=&quot;true&quot; \
+  -e ENABLE_IPV6=&quot;false&quot; \
+  ghcr.io/d1ceward/scaleway-ddns:latest</code></pre>
+<h4><a id="docker-compose" class="anchor" href="#docker-compose">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Docker Compose</h4>
+<p>Recommended for multi-container setups or easier management:</p>
+<pre><code class="language-yaml">services:
   scaleway_ddns:
-    image: d1ceward/scaleway-ddns:latest
+    image: d1ceward/scaleway-ddns:latest # Use Docker Hub image
+    # Or use GitHub Packages:
+    # image: ghcr.io/d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
-      SCW_SECRET_KEY: super-secret-from-scaleway
+      SCW_SECRET_KEY: your-scaleway-secret-key
       IDLE_MINUTES: 10
       DOMAIN_LIST: myfirstdomain.com,anotherone.com
-      ENABLE_IPV4: true # Optional, enables IPv4 address updates (default: true)
-      ENABLE_IPV6: true # Optional, enables IPv6 address updates (default: false)</code></pre>
+      ENABLE_IPV4: true   # Optional, enables IPv4 address updates (default: true)
+      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: false)</code></pre>
+<p><strong>Environment Variables:</strong></p>
+<ul>
+<li><code>SCW_SECRET_KEY</code> (<strong>required</strong>): Your Scaleway API secret key.</li>
+<li><code>IDLE_MINUTES</code>: Minutes between IP checks (default: 60).</li>
+<li><code>DOMAIN_LIST</code>: Comma-separated domains to update.</li>
+<li><code>ENABLE_IPV4</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv4 updates.</li>
+<li><code>ENABLE_IPV6</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv6 updates.</li>
+</ul>
+<hr />
 <h3><a id="linux" class="anchor" href="#linux">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Linux</h3>
-<p>Download the executable file :</p>
-<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.0.1/scaleway-ddns-linux-amd64</code></pre>
-<p>Modify the executable's permissions :</p>
+<p>Download the executable:</p>
+<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.1.0/scaleway-ddns-linux-amd64</code></pre>
+<p>Make it executable:</p>
 <pre><code class="language-shell">chmod +x scaleway-ddns</code></pre>
-<p>Execution example :</p>
-<pre><code class="language-shell">scaleway-ddns run</code></pre>
+<p>Run the service:</p>
+<pre><code class="language-shell">./scaleway-ddns run</code></pre>
 <p>Documentation available here : https://d1ceward.github.io/scaleway-ddns/</p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
