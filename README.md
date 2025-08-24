@@ -1,6 +1,7 @@
 # scaleway-ddns (v2.0.1)
 ![GitHub Workflow Status (main)](https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg)](https://hub.docker.com/r/d1ceward/scaleway-ddns)
+[![GHCR Pulls](https://img.shields.io/badge/dynamic/json?color=blue&label=GHCR%20Pulls&query=downloads&url=https://ghcr.io/v2/d1ceward/scaleway-ddns/stats/pulls&logo=github)](https://github.com/users/d1ceward/packages/container/package/scaleway-ddns)
 [![GitHub issues](https://img.shields.io/github/issues/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/issues)
 [![GitHub license](https://img.shields.io/github/license/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/blob/master/LICENSE)
 
@@ -11,6 +12,8 @@ Simple Scaleway dynamic DNS service by API written in Crystal.
 ## Installation and Usage
 
 ### Docker
+
+#### Docker Hub
 
 With `docker run` command :
 ```shell
@@ -23,12 +26,27 @@ docker run -d \
   d1ceward/scaleway-ddns:latest
 ```
 
+#### GitHub Packages
+
+With `docker run` command :
+```shell
+docker run -d \
+  -e SCW_SECRET_KEY="super-secret-from-scaleway" \
+  -e IDLE_MINUTES="10" \
+  -e DOMAIN_LIST="myfirstdomain.com,anotherone.com" \
+  -e ENABLE_IPV4="true" \
+  -e ENABLE_IPV6="false" \
+  ghcr.io/d1ceward/scaleway-ddns:latest
+```
+
 With docker-compose file :
 ```yaml
 ---
 services:
   scaleway_ddns:
-    image: d1ceward/scaleway-ddns:latest
+  image: d1ceward/scaleway-ddns:latest # For Docker Hub
+  # Or use GitHub Packages:
+  # image: ghcr.io/d1ceward/scaleway-ddns:latest
     restart: unless-stopped
     environment:
       SCW_SECRET_KEY: super-secret-from-scaleway
