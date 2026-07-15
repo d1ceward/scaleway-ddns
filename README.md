@@ -107,7 +107,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/d1cewa
 
 ## Development building and running
 
-1. Install corresponding version of Crystal lang (cf: `.crystal-version` file)
+1. Install corresponding version of Crystal lang (cf: `.tool-versions` file)
 2. Install Crystal dependencies with `shards install`
 3. Build with `shards build`
 

@@ -1,4 +1,4 @@
-FROM alpine:latest AS builder
+FROM alpine:3.24.1 AS builder
 
 ARG TARGETPLATFORM
 
