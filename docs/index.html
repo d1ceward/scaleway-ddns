@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.19.1">
-<meta name="crystal_docs.project_version" content="2.2.1">
+<meta name="generator" content="Crystal Docs 1.20.3">
+<meta name="crystal_docs.project_version" content="2.3.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>scaleway-ddns 2.2.1</title>
+  <title>scaleway-ddns 2.3.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.2.1
+        2.3.0
       </span>
     </div>
   </div>
@@ -62,6 +62,11 @@
       
         <ul>
   
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/AddressRecord" data-name="scalewayddns::addressrecord">
+      <a href="ScalewayDDNS/AddressRecord.html">AddressRecord</a>
+      
+    </li>
+  
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
       <a href="ScalewayDDNS/CLI.html">CLI</a>
       
@@ -74,6 +79,11 @@
   
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/GlobalError" data-name="scalewayddns::globalerror">
       <a href="ScalewayDDNS/GlobalError.html">GlobalError</a>
+      
+    </li>
+  
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/HTTPHelper" data-name="scalewayddns::httphelper">
+      <a href="ScalewayDDNS/HTTPHelper.html">HTTPHelper</a>
       
     </li>
   
@@ -114,11 +124,11 @@
 
 
 <div class="main-content">
-<h1><a id="scaleway-ddns-v2.2.1" class="anchor" href="#scaleway-ddns-v2.2.1">  <svg class="octicon-link" aria-hidden="true">
+<h1><a id="scaleway-ddns-v2.3.0" class="anchor" href="#scaleway-ddns-v2.3.0">  <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
-</a>scaleway-ddns (v2.2.1)</h1>
-<p><img src="https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master" alt="GitHub Workflow Status (main)" />
+</a>scaleway-ddns (v2.3.0)</h1>
+<p><img src="https://github.com/d1ceward/scaleway-ddns/actions/workflows/ci.yml/badge.svg?branch=master" alt="GitHub Workflow Status (main)" />
 <a href="https://hub.docker.com/r/d1ceward/scaleway-ddns"><img src="https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg?logo=docker" alt="Docker Pulls" /></a>
 <a href="https://github.com/users/d1ceward/packages/container/package/scaleway-ddns"><img src="https://img.shields.io/badge/GHCR-Available-blue?logo=github" alt="GHCR" /></a>
 <a href="https://github.com/d1ceward/scaleway-ddns/issues"><img src="https://img.shields.io/github/issues/d1ceward/scaleway-ddns" alt="GitHub issues" /></a>
@@ -181,15 +191,30 @@
       IDLE_MINUTES: 10
       DOMAIN_LIST: myfirstdomain.com,anotherone.com
       ENABLE_IPV4: true   # Optional, enables IPv4 address updates (default: true)
-      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: false)</code></pre>
+      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: true)</code></pre>
 <p><strong>Environment Variables:</strong></p>
 <ul>
 <li><code>SCW_SECRET_KEY</code> (<strong>required</strong>): Your Scaleway API secret key.</li>
-<li><code>IDLE_MINUTES</code>: Minutes between IP checks (default: 60).</li>
-<li><code>DOMAIN_LIST</code>: Comma-separated domains to update.</li>
-<li><code>ENABLE_IPV4</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv4 updates.</li>
-<li><code>ENABLE_IPV6</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv6 updates.</li>
+<li><code>IDLE_MINUTES</code>: Minutes between IP checks (default: 60, min: 1, max: 1440).</li>
+<li><code>DOMAIN_LIST</code>: Comma-separated domains to update, see below.</li>
+<li><code>ENABLE_IPV4</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv4 updates (default: <code>true</code>).</li>
+<li><code>ENABLE_IPV6</code>: Set to <code>true</code> or <code>false</code> to enable/disable IPv6 updates (default: <code>true</code>).</li>
 </ul>
+<p><strong>Domains and DNS zones:</strong></p>
+<p>Scaleway stores every record inside a DNS zone, so each <code>DOMAIN_LIST</code> entry is split in two: the zone
+to query, and the name of the record to update inside that zone. The zone is assumed to be the last
+two labels of the entry, which covers <code>example.com</code> and anything below it. If your zone has more
+labels, such as <code>example.co.uk</code>, write it explicitly after a colon.</p>
+<p>| <code>DOMAIN_LIST</code> entry                | Zone queried    | Record updated |
+| ---------------------------------- | --------------- | -------------- |
+| <code>example.com</code>                      | <code>example.com</code>   | the zone apex  |
+| <code>home.example.com</code>                 | <code>example.com</code>   | <code>home</code>         |
+| <code>nas.home.example.com</code>             | <code>example.com</code>   | <code>nas.home</code>     |
+| <code>home.example.co.uk:example.co.uk</code> | <code>example.co.uk</code> | <code>home</code>         |</p>
+<p>The record has to exist beforehand: the service refreshes the address of an existing <code>A</code> or <code>AAAA</code>
+record and never creates one, logging a warning when no record matches. An entry made of a single
+label, or whose name does not belong to the zone written after the colon, is skipped with a warning
+while the remaining entries are still updated.</p>
 <hr />
 <h3><a id="linux" class="anchor" href="#linux">
   <svg class="octicon-link" aria-hidden="true">
@@ -197,7 +222,7 @@
   </svg>
 </a>Linux</h3>
 <p>Download the executable:</p>
-<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.2.1/scaleway-ddns-linux-amd64</code></pre>
+<pre><code class="language-shell">wget --no-verbose -O scaleway-ddns https://github.com/d1ceward/scaleway-ddns/releases/download/v2.3.0/scaleway-ddns-linux-amd64</code></pre>
 <p>Make it executable:</p>
 <pre><code class="language-shell">chmod +x scaleway-ddns</code></pre>
 <p>Run the service:</p>
@@ -233,18 +258,6 @@
   </svg>
 </a>Running tests</h3>
 <pre><code class="language-shell">crystal spec</code></pre>
-<h2><a id="environment-variables" class="anchor" href="#environment-variables">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Environment Variables</h2>
-<ul>
-<li><code>SCW_SECRET_KEY</code> (<strong>required</strong>): Secret key from Scaleway required for IP update.</li>
-<li><code>IDLE_MINUTES</code>: Number of minutes of inactivity between IP checks (default: 60, min: 1, max: 1440).</li>
-<li><code>DOMAIN_LIST</code>: Comma-separated list of domains to update (e.g., <code>example.com,another.com</code>).</li>
-<li><code>ENABLE_IPV4</code>: Enables IPv4 address updates. Set to <code>false</code> to disable (default: <code>true</code>).</li>
-<li><code>ENABLE_IPV6</code>: Enables IPv6 address updates. Set to <code>true</code> to enable (default: <code>false</code>).</li>
-</ul>
 <h2><a id="contributors" class="anchor" href="#contributors">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>

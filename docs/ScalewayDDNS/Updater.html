@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.19.1">
-<meta name="crystal_docs.project_version" content="2.2.1">
+<meta name="generator" content="Crystal Docs 1.20.3">
+<meta name="crystal_docs.project_version" content="2.3.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Updater - scaleway-ddns 2.2.1</title>
+  <title>ScalewayDDNS::Updater - scaleway-ddns 2.3.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.2.1
+        2.3.0
       </span>
     </div>
   </div>
@@ -62,6 +62,11 @@
       
         <ul>
   
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/AddressRecord" data-name="scalewayddns::addressrecord">
+      <a href="../ScalewayDDNS/AddressRecord.html">AddressRecord</a>
+      
+    </li>
+  
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
       <a href="../ScalewayDDNS/CLI.html">CLI</a>
       
@@ -74,6 +79,11 @@
   
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/GlobalError" data-name="scalewayddns::globalerror">
       <a href="../ScalewayDDNS/GlobalError.html">GlobalError</a>
+      
+    </li>
+  
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/HTTPHelper" data-name="scalewayddns::httphelper">
+      <a href="../ScalewayDDNS/HTTPHelper.html">HTTPHelper</a>
       
     </li>
   
@@ -172,9 +182,36 @@
   
   <dl>
     
+      <dt class="entry-const" id="EMPTY_DOMAIN_LIST">
+        <strong>EMPTY_DOMAIN_LIST</strong> = <code><span class="s">&quot;Empty domain list, please check configuration variables.&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Reported when no domain is configured.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="MISSING_SECRET_KEY">
+        <strong>MISSING_SECRET_KEY</strong> = <code><span class="s">&quot;Empty secret key, please check configuration variables.&quot;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Reported when no secret key is configured.</p>
+      </dd>
+      
+    
       <dt class="entry-const" id="RECORD_TYPES">
         <strong>RECORD_TYPES</strong> = <code>{<span class="s">&quot;ipv4&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;A&quot;</span>, <span class="s">&quot;ipv6&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;AAAA&quot;</span>}</code>
       </dt>
+      
+    
+      <dt class="entry-const" id="ZONE_SEPARATOR">
+        <strong>ZONE_SEPARATOR</strong> = <code><span class="s">&#39;:&#39;</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Separator between a record name and its explicit DNS zone in <code>DOMAIN_LIST</code>.</p>
+      </dd>
       
     
   </dl>
@@ -216,7 +253,16 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#run-instance-method" class="signature"><strong>#run</strong></a>
+        <a href="#run%3ANoReturn-instance-method" class="signature"><strong>#run</strong> : NoReturn</a>
+        
+          <div class="summary"><p>Runs update cycles until the process is terminated.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#update%3ANil-instance-method" class="signature"><strong>#update</strong> : Nil</a>
+        
+          <div class="summary"><p>Performs a single update cycle for every configured domain.</p></div>
         
       </li>
     
@@ -294,13 +340,37 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="run-instance-method">
+    <div class="entry-detail" id="run:NoReturn-instance-method">
       <div class="signature">
         
-        def <strong>run</strong>
+        def <strong>run</strong> : NoReturn
 
-        <a class="method-permalink" href="#run-instance-method">#</a>
+        <a class="method-permalink" href="#run%3ANoReturn-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Runs update cycles until the process is terminated.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="update:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>update</strong> : Nil
+
+        <a class="method-permalink" href="#update%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Performs a single update cycle for every configured domain.</p>
+        </div>
       
       <br/>
       <div>

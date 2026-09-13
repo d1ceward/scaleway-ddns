@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.19.1">
-<meta name="crystal_docs.project_version" content="2.2.1">
+<meta name="generator" content="Crystal Docs 1.20.3">
+<meta name="crystal_docs.project_version" content="2.3.0">
 <meta name="crystal_docs.project_name" content="scaleway-ddns">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Config - scaleway-ddns 2.2.1</title>
+  <title>ScalewayDDNS::Config - scaleway-ddns 2.3.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        2.2.1
+        2.3.0
       </span>
     </div>
   </div>
@@ -62,6 +62,11 @@
       
         <ul>
   
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/AddressRecord" data-name="scalewayddns::addressrecord">
+      <a href="../ScalewayDDNS/AddressRecord.html">AddressRecord</a>
+      
+    </li>
+  
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
       <a href="../ScalewayDDNS/CLI.html">CLI</a>
       
@@ -74,6 +79,11 @@
   
   <li class=" " data-id="scaleway-ddns/ScalewayDDNS/GlobalError" data-name="scalewayddns::globalerror">
       <a href="../ScalewayDDNS/GlobalError.html">GlobalError</a>
+      
+    </li>
+  
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/HTTPHelper" data-name="scalewayddns::httphelper">
+      <a href="../ScalewayDDNS/HTTPHelper.html">HTTPHelper</a>
       
     </li>
   
@@ -184,12 +194,30 @@
   
   <dl>
     
+      <dt class="entry-const" id="DEFAULT_IDLE_MINUTES">
+        <strong>DEFAULT_IDLE_MINUTES</strong> = <code><span class="n">60</span></code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Number of minutes between IP checks when none is configured.</p>
+      </dd>
+      
+    
       <dt class="entry-const" id="FALSY_VALUES">
-        <strong>FALSY_VALUES</strong> = <code>[<span class="s">&quot;false&quot;</span>, <span class="s">&quot;n&quot;</span>, <span class="s">&quot;no&quot;</span>, <span class="s">&quot;0&quot;</span>, <span class="s">&quot;off&quot;</span>, <span class="s">&quot;disabled&quot;</span>, <span class="s">&quot;none&quot;</span>, <span class="s">&quot;null&quot;</span>, <span class="s">&quot;nil&quot;</span>, <span class="s">&quot;&quot;</span>, <span class="n">false</span>, <span class="n">0</span>] <span class="k">of</span> <span class="t">String</span> <span class="o">|</span> <span class="t">Bool</span> <span class="o">|</span> <span class="t">Int32</span></code>
+        <strong>FALSY_VALUES</strong> = <code>[<span class="s">&quot;false&quot;</span>, <span class="s">&quot;n&quot;</span>, <span class="s">&quot;no&quot;</span>, <span class="s">&quot;0&quot;</span>, <span class="s">&quot;off&quot;</span>, <span class="s">&quot;disabled&quot;</span>, <span class="s">&quot;none&quot;</span>, <span class="s">&quot;null&quot;</span>, <span class="s">&quot;nil&quot;</span>, <span class="s">&quot;&quot;</span>]</code>
       </dt>
       
       <dd class="entry-const-doc">
         <p>Falsy values for boolean environment parsing.</p>
+      </dd>
+      
+    
+      <dt class="entry-const" id="IDLE_MINUTES_RANGE">
+        <strong>IDLE_MINUTES_RANGE</strong> = <code>(<span class="n">1</span>..<span class="n">1440</span>)</code>
+      </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Accepted range for <code>IDLE_MINUTES</code>.</p>
       </dd>
       
     

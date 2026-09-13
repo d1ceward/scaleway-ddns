@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::Request - scaleway-ddns 2.3.0</title>
+  <title>ScalewayDDNS::HTTPHelper - scaleway-ddns 2.3.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -82,7 +82,7 @@
       
     </li>
   
-  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/HTTPHelper" data-name="scalewayddns::httphelper">
+  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/HTTPHelper" data-name="scalewayddns::httphelper">
       <a href="../ScalewayDDNS/HTTPHelper.html">HTTPHelper</a>
       
     </li>
@@ -97,7 +97,7 @@
       
     </li>
   
-  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/Request" data-name="scalewayddns::request">
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/Request" data-name="scalewayddns::request">
       <a href="../ScalewayDDNS/Request.html">Request</a>
       
     </li>
@@ -127,16 +127,25 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> ScalewayDDNS::<wbr>Request
+    module
+  </span> ScalewayDDNS::<wbr>HTTPHelper
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../ScalewayDDNS/Request.html">ScalewayDDNS::Request</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Shared HTTP plumbing for the external APIs used by the updater.</p>
 
 
 
@@ -163,7 +172,7 @@
   </h2>
   
     
-      scaleway_ddns/request.cr
+      scaleway_ddns/http_helper.cr
     
     <br/>
   
@@ -182,36 +191,40 @@
   
   <dl>
     
-      <dt class="entry-const" id="ADDRESS_RECORD_TYPES">
-        <strong>ADDRESS_RECORD_TYPES</strong> = <code>[<span class="s">&quot;A&quot;</span>, <span class="s">&quot;AAAA&quot;</span>] <span class="k">of</span> <span class="t">::</span><span class="t">String</span></code>
+      <dt class="entry-const" id="CONNECT_TIMEOUT">
+        <strong>CONNECT_TIMEOUT</strong> = <code><span class="n">10</span>.seconds</code>
       </dt>
       
       <dd class="entry-const-doc">
-        <p>Address record types handled by the updater.</p>
+        <p>Maximum time allowed to establish a connection.</p>
       </dd>
       
     
-      <dt class="entry-const" id="DEFAULT_TTL">
-        <strong>DEFAULT_TTL</strong> = <code><span class="n">60</span></code>
+      <dt class="entry-const" id="MAX_ATTEMPTS">
+        <strong>MAX_ATTEMPTS</strong> = <code><span class="n">3</span></code>
       </dt>
       
       <dd class="entry-const-doc">
-        <p>Time to live used when the API does not report one.</p>
+        <p>Number of times a request is attempted before giving up.</p>
       </dd>
       
     
-      <dt class="entry-const" id="RECORD_PAGE_SIZE">
-        <strong>RECORD_PAGE_SIZE</strong> = <code><span class="n">100</span></code>
+      <dt class="entry-const" id="READ_TIMEOUT">
+        <strong>READ_TIMEOUT</strong> = <code><span class="n">30</span>.seconds</code>
       </dt>
       
       <dd class="entry-const-doc">
-        <p>Number of records asked per page, the maximum allowed by the Scaleway API.</p>
+        <p>Maximum time allowed to receive a response once connected.</p>
       </dd>
       
     
-      <dt class="entry-const" id="SCW_API_HOST">
-        <strong>SCW_API_HOST</strong> = <code><span class="s">&quot;api.scaleway.com&quot;</span></code>
+      <dt class="entry-const" id="RETRY_DELAY">
+        <strong>RETRY_DELAY</strong> = <code><span class="n">1</span>.second</code>
       </dt>
+      
+      <dd class="entry-const-doc">
+        <p>Base delay between two attempts, multiplied by the attempt number.</p>
+      </dd>
       
     
   </dl>
@@ -219,18 +232,22 @@
 
 
   
+
+  
   <h2>
-    <a id="constructors" class="anchor" href="#constructors">
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Constructors
+    Class Method Summary
   </h2>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28scw_secret_key%3AString%29-class-method" class="signature"><strong>.new</strong>(scw_secret_key : String)</a>
+        <a href="#execute%28host%3AString%2Cmethod%3AString%2Cpath%3AString%2Cheaders%3AHTTP%3A%3AHeaders%7CNil%3Dnil%2Cbody%3AString%7CNil%3Dnil%29%3AHTTP%3A%3AClient%3A%3AResponse-class-method" class="signature"><strong>.execute</strong>(host : String, method : String, path : String, headers : HTTP::Headers | Nil = <span class="n">nil</span>, body : String | Nil = <span class="n">nil</span>) : HTTP::Client::Response</a>
+        
+          <div class="summary"><p>Executes a request against <em>host</em>, retrying transient connection failures.</p></div>
         
       </li>
     
@@ -240,136 +257,37 @@
   
 
   
-
-  
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#address_record_list%28domain%3AString%2Ctypes%3AArray%28String%29%3DADDRESS_RECORD_TYPES%29%3AArray%28AddressRecord%29-instance-method" class="signature"><strong>#address_record_list</strong>(domain : String, types : Array(String) = <span class="t">ADDRESS_RECORD_TYPES</span>) : Array(AddressRecord)</a>
-        
-          <div class="summary"><p>Get a list of A and AAAA records from the Scaleway API for a given domain.</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AAddressRecord%2Crecord_type%3AString%29%3AJSON%3A%3AAny-instance-method" class="signature"><strong>#update_address_record</strong>(domain : String, ip : String, record : AddressRecord, record_type : String) : JSON::Any</a>
-        
-          <div class="summary"><p>Update an address record (A or AAAA) in the Scaleway API for a given domain.</p></div>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
+
+  
   <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Constructor Detail
+    Class Method Detail
   </h2>
   
-    <div class="entry-detail" id="new(scw_secret_key:String)-class-method">
+    <div class="entry-detail" id="execute(host:String,method:String,path:String,headers:HTTP::Headers|Nil=nil,body:String|Nil=nil):HTTP::Client::Response-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(scw_secret_key : String)
+        def self.<strong>execute</strong>(host : String, method : String, path : String, headers : HTTP::Headers | Nil = <span class="n">nil</span>, body : String | Nil = <span class="n">nil</span>) : HTTP::Client::Response
 
-        <a class="method-permalink" href="#new%28scw_secret_key%3AString%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-
-
-  
-
-  
-
-  
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="address_record_list(domain:String,types:Array(String)=ADDRESS_RECORD_TYPES):Array(AddressRecord)-instance-method">
-      <div class="signature">
-        
-        def <strong>address_record_list</strong>(domain : String, types : Array(String) = <span class="t">ADDRESS_RECORD_TYPES</span>) : Array(<a href="../ScalewayDDNS/AddressRecord.html">AddressRecord</a>)
-
-        <a class="method-permalink" href="#address_record_list%28domain%3AString%2Ctypes%3AArray%28String%29%3DADDRESS_RECORD_TYPES%29%3AArray%28AddressRecord%29-instance-method">#</a>
+        <a class="method-permalink" href="#execute%28host%3AString%2Cmethod%3AString%2Cpath%3AString%2Cheaders%3AHTTP%3A%3AHeaders%7CNil%3Dnil%2Cbody%3AString%7CNil%3Dnil%29%3AHTTP%3A%3AClient%3A%3AResponse-class-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Get a list of A and AAAA records from the Scaleway API for a given domain.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="update_address_record(domain:String,ip:String,record:AddressRecord,record_type:String):JSON::Any-instance-method">
-      <div class="signature">
-        
-        def <strong>update_address_record</strong>(domain : String, ip : String, record : <a href="../ScalewayDDNS/AddressRecord.html">AddressRecord</a>, record_type : String) : JSON::Any
-
-        <a class="method-permalink" href="#update_address_record%28domain%3AString%2Cip%3AString%2Crecord%3AAddressRecord%2Crecord_type%3AString%29%3AJSON%3A%3AAny-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Update an address record (A or AAAA) in the Scaleway API for a given domain.</p>
+          <p>Executes a request against <em>host</em>, retrying transient connection failures.</p>
+<p>Returns a synthetic 408 response when every attempt fails, so that callers only have to deal with a
+status code.</p>
         </div>
       
       <br/>
@@ -379,6 +297,10 @@
     </div>
   
 
+
+  
+
+  
 
 
 </div>

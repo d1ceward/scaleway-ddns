@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="scaleway-ddns">
-  <title>ScalewayDDNS::CLI - scaleway-ddns 2.3.0</title>
+  <title>ScalewayDDNS::AddressRecord - scaleway-ddns 2.3.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -62,12 +62,12 @@
       
         <ul>
   
-  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/AddressRecord" data-name="scalewayddns::addressrecord">
+  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/AddressRecord" data-name="scalewayddns::addressrecord">
       <a href="../ScalewayDDNS/AddressRecord.html">AddressRecord</a>
       
     </li>
   
-  <li class=" current" data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
+  <li class=" " data-id="scaleway-ddns/ScalewayDDNS/CLI" data-name="scalewayddns::cli">
       <a href="../ScalewayDDNS/CLI.html">CLI</a>
       
     </li>
@@ -127,13 +127,11 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> ScalewayDDNS::<wbr>CLI
+    alias
+  </span> ScalewayDDNS::<wbr>AddressRecord
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../ScalewayDDNS/CLI.html">ScalewayDDNS::CLI</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -147,9 +145,19 @@
     Overview
   </h2>
 
-  <p>Handles command line interface interactions for the updater.</p>
+  <p>An address record as returned by the Scaleway API.</p>
 
 
+
+  <h2>
+    <a id="alias-definition" class="anchor" href="#alias-definition">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Alias Definition
+  </h2>
+  <code>Hash(Symbol, Int32 | String)</code>
 
 
 
@@ -174,7 +182,7 @@
   </h2>
   
     
-      scaleway_ddns/cli.cr
+      scaleway_ddns/request.cr
     
     <br/>
   
@@ -184,190 +192,25 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#config%3AConfig-instance-method" class="signature"><strong>#config</strong> : Config</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#config%3D%28config%3AConfig%29-instance-method" class="signature"><strong>#config=</strong>(config : Config)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#run_updater%3D%28run_updater%3ABool%29-instance-method" class="signature"><strong>#run_updater=</strong>(run_updater : Bool)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#run_updater%3F%3ABool-instance-method" class="signature"><strong>#run_updater?</strong> : Bool</a>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>
-
-        <a class="method-permalink" href="#new-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="config:Config-instance-method">
-      <div class="signature">
-        
-        def <strong>config</strong> : <a href="../ScalewayDDNS/Config.html">Config</a>
-
-        <a class="method-permalink" href="#config%3AConfig-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="config=(config:Config)-instance-method">
-      <div class="signature">
-        
-        def <strong>config=</strong>(config : <a href="../ScalewayDDNS/Config.html">Config</a>)
-
-        <a class="method-permalink" href="#config%3D%28config%3AConfig%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="run_updater=(run_updater:Bool)-instance-method">
-      <div class="signature">
-        
-        def <strong>run_updater=</strong>(run_updater : Bool)
-
-        <a class="method-permalink" href="#run_updater%3D%28run_updater%3ABool%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="run_updater?:Bool-instance-method">
-      <div class="signature">
-        
-        def <strong>run_updater?</strong> : Bool
-
-        <a class="method-permalink" href="#run_updater%3F%3ABool-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-
 
 
 </div>
