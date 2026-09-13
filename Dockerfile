@@ -9,12 +9,12 @@ COPY ./scaleway-ddns-linux-arm64/scaleway-ddns-linux-arm64 .
 RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
     mv "./scaleway-ddns-${BINARY_PLATFORM}" ./scaleway-ddns
 
-FROM alpine:latest
+FROM alpine:3.24.1
 
 WORKDIR /
 COPY ./LICENSE .
-COPY --from=builder ./scaleway-ddns .
+COPY --from=builder --chmod=755 ./scaleway-ddns .
 
-RUN chmod +x ./scaleway-ddns
+USER nobody
 
 ENTRYPOINT ["./scaleway-ddns", "run"]

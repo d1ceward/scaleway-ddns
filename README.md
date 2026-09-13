@@ -1,5 +1,5 @@
 # scaleway-ddns (v2.2.1)
-![GitHub Workflow Status (main)](https://github.com/d1ceward/scaleway-ddns/actions/workflows/main.yml/badge.svg?branch=master)
+![GitHub Workflow Status (main)](https://github.com/d1ceward/scaleway-ddns/actions/workflows/ci.yml/badge.svg?branch=master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/d1ceward/scaleway-ddns.svg?logo=docker)](https://hub.docker.com/r/d1ceward/scaleway-ddns)
 [![GHCR](https://img.shields.io/badge/GHCR-Available-blue?logo=github)](https://github.com/users/d1ceward/packages/container/package/scaleway-ddns)
 [![GitHub issues](https://img.shields.io/github/issues/d1ceward/scaleway-ddns)](https://github.com/d1ceward/scaleway-ddns/issues)
@@ -61,15 +61,34 @@ services:
       IDLE_MINUTES: 10
       DOMAIN_LIST: myfirstdomain.com,anotherone.com
       ENABLE_IPV4: true   # Optional, enables IPv4 address updates (default: true)
-      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: false)
+      ENABLE_IPV6: false  # Optional, enables IPv6 address updates (default: true)
 ```
 
 **Environment Variables:**
 - `SCW_SECRET_KEY` (**required**): Your Scaleway API secret key.
-- `IDLE_MINUTES`: Minutes between IP checks (default: 60).
-- `DOMAIN_LIST`: Comma-separated domains to update.
-- `ENABLE_IPV4`: Set to `true` or `false` to enable/disable IPv4 updates.
-- `ENABLE_IPV6`: Set to `true` or `false` to enable/disable IPv6 updates.
+- `IDLE_MINUTES`: Minutes between IP checks (default: 60, min: 1, max: 1440).
+- `DOMAIN_LIST`: Comma-separated domains to update, see below.
+- `ENABLE_IPV4`: Set to `true` or `false` to enable/disable IPv4 updates (default: `true`).
+- `ENABLE_IPV6`: Set to `true` or `false` to enable/disable IPv6 updates (default: `true`).
+
+**Domains and DNS zones:**
+
+Scaleway stores every record inside a DNS zone, so each `DOMAIN_LIST` entry is split in two: the zone
+to query, and the name of the record to update inside that zone. The zone is assumed to be the last
+two labels of the entry, which covers `example.com` and anything below it. If your zone has more
+labels, such as `example.co.uk`, write it explicitly after a colon.
+
+| `DOMAIN_LIST` entry                | Zone queried    | Record updated |
+| ---------------------------------- | --------------- | -------------- |
+| `example.com`                      | `example.com`   | the zone apex  |
+| `home.example.com`                 | `example.com`   | `home`         |
+| `nas.home.example.com`             | `example.com`   | `nas.home`     |
+| `home.example.co.uk:example.co.uk` | `example.co.uk` | `home`         |
+
+The record has to exist beforehand: the service refreshes the address of an existing `A` or `AAAA`
+record and never creates one, logging a warning when no record matches. An entry made of a single
+label, or whose name does not belong to the zone written after the colon, is skipped with a warning
+while the remaining entries are still updated.
 
 ---
 
@@ -118,14 +137,6 @@ The newly created binary should be at `bin/scaleway-ddns`
 ```shell
 crystal spec
 ```
-
-## Environment Variables
-
-- `SCW_SECRET_KEY` (**required**): Secret key from Scaleway required for IP update.
-- `IDLE_MINUTES`: Number of minutes of inactivity between IP checks (default: 60, min: 1, max: 1440).
-- `DOMAIN_LIST`: Comma-separated list of domains to update (e.g., `example.com,another.com`).
-- `ENABLE_IPV4`: Enables IPv4 address updates. Set to `false` to disable (default: `true`).
-- `ENABLE_IPV6`: Enables IPv6 address updates. Set to `true` to enable (default: `false`).
 
 ## Contributors
 

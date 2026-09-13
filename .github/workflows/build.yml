@@ -23,7 +23,7 @@ jobs:
         with:
           path: repository
       - name: Build binary
-        uses: d1ceward/run-on-arch-action@master
+        uses: d1ceward/run-on-arch-action@29ad87adc44eb4e84293df00b53e7f49c148cab2 # master
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}

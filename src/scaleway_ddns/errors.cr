@@ -1,10 +1,11 @@
 module ScalewayDDNS
   class GlobalError < Exception; end
+
   class IPError < Exception; end
 
   # Raised when the Scaleway API returns an error.
   class RequestError < Exception
-    def initialize(@http_status : Int32)
+    def initialize(@http_status : Int32) : Nil
       super("Scaleway API: #{error_message_by_http_status}")
     end
 

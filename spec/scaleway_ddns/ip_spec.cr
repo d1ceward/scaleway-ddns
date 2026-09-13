@@ -4,7 +4,7 @@ require "../spec_helper"
 
 describe ScalewayDDNS::IP do
   describe "#current_ips" do
-    before_each &->WebMock.reset
+    before_each(&->WebMock.reset)
 
     it "returns valid IPv4 ip" do
       WebMock.stub(:get, "https://api.ipify.org/").to_return(status: 200, body: "127.0.0.1")
@@ -33,7 +33,8 @@ describe ScalewayDDNS::IP do
 
     it "raises timeout error on 408 invalid response for IPv4" do
       WebMock.stub(:get, "https://api.ipify.org/").to_return(status: 408)
-      # Since current_ips swallows errors and logs, we can't expect_raises here, but we can check that the key is missing
+      # Since current_ips swallows errors and logs, we can't expect_raises here,
+      # but we can check that the key is missing
       ips = ScalewayDDNS::IP.current_ips(ipv4: true, ipv6: false)
       ips.has_key?("ipv4").should be_false
     end

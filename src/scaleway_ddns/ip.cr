@@ -8,15 +8,13 @@ module ScalewayDDNS
     def self.current_ips(ipv4 : Bool = true, ipv6 : Bool = false) : Hash(String, String)
       [
         {"ipv4", ipv4, false},
-        {"ipv6", ipv6, true}
+        {"ipv6", ipv6, true},
       ].select { |_, enabled, _| enabled }
-       .each_with_object({} of String => String) do |(label, _, v6), result|
-        begin
+        .each_with_object({} of String => String) do |(label, _, v6), result|
           result[label] = current_ip(v6)
-        rescue IPError
-          Log.warn { "Could not fetch #{label.upcase} address" }
+        rescue exception : IPError
+          Log.warn { "Could not fetch #{label.upcase} address: #{exception.message}" }
         end
-      end
     end
 
     # Returns current IP address from external API as string
@@ -37,12 +35,7 @@ module ScalewayDDNS
     end
 
     private def self.execute_request(ipv6 : Bool = false) : HTTP::Client::Response
-      host = ipv6 ? IP_API_HOST_V6 : IP_API_HOST_V4
-      client = HTTP::Client.new(URI.new("https", host))
-      client.connect_timeout = 10.seconds
-      client.get("/")
-    rescue IO::TimeoutError | Socket::Addrinfo::Error | Socket::ConnectError
-      HTTP::Client::Response.new(408)
+      HTTPHelper.execute(ipv6 ? IP_API_HOST_V6 : IP_API_HOST_V4, "GET", "/")
     end
 
     private def self.parse_response(response : HTTP::Client::Response) : String

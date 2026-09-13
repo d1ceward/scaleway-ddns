@@ -20,11 +20,17 @@ module ScalewayDDNS
 
     # Falsy values for boolean environment parsing.
     FALSY_VALUES = [
-      "false", "n", "no", "0", "off", "disabled", "none", "null", "nil", "", false, 0
-    ] of String | Bool | Int32
+      "false", "n", "no", "0", "off", "disabled", "none", "null", "nil", "",
+    ]
+
+    # Number of minutes between IP checks when none is configured.
+    DEFAULT_IDLE_MINUTES = 60
+
+    # Accepted range for `IDLE_MINUTES`.
+    IDLE_MINUTES_RANGE = (1..1440)
 
     # Creates a new instance of `ScalewayDDNS::Config` based on environment variables.
-    def initialize
+    def initialize : Nil
       @scw_secret_key = ENV["SCW_SECRET_KEY"]?.to_s
       @idle_minutes = parse_idle_minutes_from_env
       @domain_list = parse_domain_list_from_env
@@ -33,10 +39,8 @@ module ScalewayDDNS
     end
 
     private def parse_idle_minutes_from_env : Int32
-      idle = ENV["IDLE_MINUTES"]?.to_s.to_i
-      (1..1440).includes?(idle) ? idle : 60
-    rescue ArgumentError
-      60
+      idle = ENV["IDLE_MINUTES"]?.try(&.to_i?) || DEFAULT_IDLE_MINUTES
+      IDLE_MINUTES_RANGE.includes?(idle) ? idle : DEFAULT_IDLE_MINUTES
     end
 
     private def parse_domain_list_from_env : Array(String)
@@ -48,7 +52,7 @@ module ScalewayDDNS
       value = ENV[var]?
       return true unless value
 
-      !FALSY_VALUES.includes?(value.to_s.strip.downcase)
+      !FALSY_VALUES.includes?(value.strip.downcase)
     end
   end
 end

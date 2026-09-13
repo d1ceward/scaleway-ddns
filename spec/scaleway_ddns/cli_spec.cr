@@ -25,10 +25,16 @@ describe ScalewayDDNS::CLI do
     output.should contain("version")
   end
 
-  it "runs updater with run subcommand" do
-    status, _output = CLIHelper.run_cli("run")
-    # Exit code and output depend on Updater, so just check process runs
-    status.exit_code.should be_a(Int32)
+  it "exits with an explicit error when the secret key is missing" do
+    status, output = CLIHelper.run_cli("run")
+    status.exit_code.should eq(1)
+    output.should contain("Empty secret key")
+  end
+
+  it "exits with an explicit error when the domain list is empty" do
+    status, output = CLIHelper.run_cli("run", env: {"SCW_SECRET_KEY" => "dummy_secret"})
+    status.exit_code.should eq(1)
+    output.should contain("Empty domain list")
   end
 
   it "shows error for invalid option" do
