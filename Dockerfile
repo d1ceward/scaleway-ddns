@@ -1,4 +1,4 @@
-FROM alpine:3.24.2 AS builder
+FROM alpine:3.24.3 AS builder
 
 ARG TARGETPLATFORM
 
@@ -9,7 +9,7 @@ COPY ./scaleway-ddns-linux-arm64/scaleway-ddns-linux-arm64 .
 RUN export BINARY_PLATFORM="$(echo $TARGETPLATFORM | sed "s#/#-#g")" && \
     mv "./scaleway-ddns-${BINARY_PLATFORM}" ./scaleway-ddns
 
-FROM alpine:3.24.2
+FROM alpine:3.24.3
 
 WORKDIR /
 COPY ./LICENSE .
